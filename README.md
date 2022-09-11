@@ -21,8 +21,10 @@ La aplicación constará de las siguientes funcionalidades en forma general:
 
 # Licencia
 Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 International, ya que:
-No se permitirá que adaptaciones del software sean compartidas
-No se permitirá el uso comercial del software
+
+>No se permitirá que adaptaciones del software sean compartidas
+
+>No se permitirá el uso comercial del software
 
 
 # Autores

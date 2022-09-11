@@ -48,3 +48,5 @@ Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 In
 >Tablero en Trello-->https://trello.com/b/M1IMcah6/banco-de-sangre
 
 >Documento Primera Fase-->https://docs.google.com/document/d/1phpidLZfsNRvPMbihREtfMPtMjrQmApX5jShtwVT3lA/edit#
+
+>Documento con los Mockups--> https://drive.google.com/file/d/1q8lgtrUZjXR4Oh153vEjB7U_Bz0WWO8l/view?usp=sharing

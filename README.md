@@ -1,10 +1,16 @@
 # BancoDeSangre
 La aplicación constará de las siguientes funcionalidades en forma general:
+
 >Autenticación de usuarios (Funcionalidad Multi-Entidad, diferente información para cada entidad)
+
 >Recuperación de cuenta
+
 >Administración de pacientes
+
 >Registro de transfusiones
+
 >Registro de donaciones
+
 >Administración de bolsas de sangre disponibles
 
 

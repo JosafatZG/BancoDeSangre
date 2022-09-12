@@ -50,3 +50,5 @@ Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 In
 >Documento Primera Fase-->https://docs.google.com/document/d/1phpidLZfsNRvPMbihREtfMPtMjrQmApX5jShtwVT3lA/edit#
 
 >Documento con los Mockups--> https://drive.google.com/file/d/1q8lgtrUZjXR4Oh153vEjB7U_Bz0WWO8l/view?usp=sharing
+
+>Documento Fase 1--> https://drive.google.com/file/d/1FEmhgGE4GsTEK5OubVtczDz23RnxmPws/view?usp=sharing

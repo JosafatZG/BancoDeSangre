@@ -9,7 +9,7 @@ export const CambioPass = () => {
       <View style = {styles.contenedorimg}>
 				<Image 
 					style = {styles.img}
-          source={require('../img/candado2color.png')}
+          source={require('../img/candado2color2.png')}
 				/>
 			</View>
 			<View style = {styles.cartas}>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: 150   
   },
   cartas: {
-    backgroundColor: '#F1025E',
+    backgroundColor: '#C43B58',
     height: 300,
     margin: 15,
     borderRadius: 14,    
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
 	button:{
     fontSize:20,
-    color:'#F1025E',
+    color:'#C43B58',
     fontWeight:'bold',
     padding:8,		
   },

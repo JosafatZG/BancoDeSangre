@@ -9,7 +9,7 @@ export const RecuperacionPass = ({ navigation }) => {
       <View style={styles.contenedorimg}>      
         <Image 
           style = {styles.img}
-          source={require('../img/candadocolor.png')}
+          source={require('../img/candado1color2.png')}
         />
       </View>
       <View>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     width: 150   
   },
   cartas: {
-    backgroundColor: '#F1025E',
+    backgroundColor: '#C43B58',
     height: 160,
     width:'97.5%',
     margin: 5,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   button:{
     fontSize:20,
-    color:'#F1025E',
+    color:'#C43B58',
     fontWeight:'bold',
     padding:8,
   },

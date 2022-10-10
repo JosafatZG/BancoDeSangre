@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     marginBottom:5,
   },
   cards:{
-    backgroundColor: '#F1025E',
+    backgroundColor: '#C43B58',
     height: 255,
     width:'97.5%',
     margin: 5,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   button:{
     fontSize:20,
-    color:'#F1025E',
+    color:'#C43B58',
     fontWeight:'bold',
     padding:8,
   },

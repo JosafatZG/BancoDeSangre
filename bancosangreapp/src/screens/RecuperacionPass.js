@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
   cartas: {
     backgroundColor: '#F1025E',
     height: 160,
-    margin: 15,
+    width:'97.5%',
+    margin: 5,
     borderRadius: 14,    
     alignItems: 'center',
     shadowRadius: 2,

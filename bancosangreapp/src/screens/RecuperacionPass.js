@@ -9,7 +9,7 @@ export const RecuperacionPass = ({ navigation }) => {
       <View style={styles.contenedorimg}>      
         <Image 
           style = {styles.img}
-          source={require('../img/candado.png')}
+          source={require('../img/candadocolor.png')}
         />
       </View>
       <View>
@@ -21,10 +21,10 @@ export const RecuperacionPass = ({ navigation }) => {
             placeholder='Ingrese correo electrónico '
             placeholderTextColor= 'white'
           />
-          <TouchableHighlight 
-            style = {styles.btn}              
-          >            
-            <Text>Aceptar</Text>
+          <TouchableHighlight>
+            <View style={styles.buttonContainer}>
+              <Text style={styles.button}>Aceptar</Text>
+            </View>
           </TouchableHighlight>
 
         </View>
@@ -35,12 +35,13 @@ export const RecuperacionPass = ({ navigation }) => {
             placeholder='Ingrese código'
             placeholderTextColor= 'white'
           />
-          <TouchableHighlight 
-            style = {styles.btn}
-            onPress={() => navigation.navigate('Cambio de contraseña')} 
-          >            
-            <Text>Aceptar</Text>
-          </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => navigation.navigate('Cambio de contraseña')}
+            >
+              <View style={styles.buttonContainer}>
+                <Text style={styles.button}>Ingresar</Text>
+              </View>
+            </TouchableHighlight>
         </View>
       </View>
     </>      
@@ -99,6 +100,17 @@ const styles = StyleSheet.create({
     width: 200,
     borderWidth: 0.5,    
     borderRadius: 10
-  }
+  },
+  button:{
+    fontSize:20,
+    color:'#F1025E',
+    fontWeight:'bold',
+    padding:8,
+  },
+  buttonContainer:{
+    backgroundColor:'white',
+    marginTop:10,
+    borderRadius:2
+  },
 
 });

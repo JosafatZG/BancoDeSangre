@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
   buttonContainer:{
     backgroundColor:'white',
     marginTop:10,
-    borderRadius:2,
-
+    borderRadius:2
   },
 });

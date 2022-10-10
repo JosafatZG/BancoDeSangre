@@ -27,7 +27,9 @@ export const Login = ({ navigation }) => {
           secureTextEntry={true}
           style={styles.cardText}
         />
-        <TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => {navigation.navigate('Menu usuario')}}
+        >
           <View style={styles.buttonContainer}>
             <Text style={styles.button}>Ingresar</Text>
           </View>

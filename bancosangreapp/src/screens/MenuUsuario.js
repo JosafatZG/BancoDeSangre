@@ -119,6 +119,22 @@ export const MenuUsuario = ({navigation}) => {
 							<Text style = {styles.tituloOpciones}>Registro de usuarios</Text>
 						</TouchableHighlight>						
 					</View>
+
+					<View style = {styles.cartaMenu}>
+						<View style = {styles.decoracionCarta}>			
+							<View style = {styles.contenedorimg}>
+								<Image 
+									source={require('../img/controlusuarios.png')}
+								/>	
+							</View>			
+						</View>	
+						<TouchableHighlight
+						 	style = {styles.contenedorinfo}
+							onPress = {() => navigation.navigate('Control de usuarios')}
+						>
+							<Text style = {styles.tituloOpciones}>Control de usuarios</Text>
+						</TouchableHighlight>						
+					</View>
 				</ScrollView>
 			</View>
     </>

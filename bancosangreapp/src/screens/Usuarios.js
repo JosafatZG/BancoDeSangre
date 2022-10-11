@@ -44,7 +44,7 @@ export const Usuarios = () => {
 					/>
 				</View>
 				<TouchableHighlight
-              onPress={() => alert('Usuario registrado exitosamente')}
+          onPress={() => alert('Usuario registrado exitosamente')}
         >
           <View style={styles.buttonContainer}>
             <Text style={styles.button}>Registrar usuario</Text>

@@ -7,6 +7,7 @@ import { RecuperacionPass } from './src/screens/RecuperacionPass';
 import { CambioPass } from './src/screens/CambioPass';
 import { MenuUsuario } from './src/screens/MenuUsuario';
 import { Pacientes } from './src/screens/Pacientes';
+import { Usuarios } from './src/screens/Usuarios';
 
 export default function App() {  
   const Stack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ export default function App() {
         <Stack.Screen name="Cambio de contraseña" component={CambioPass} />
         <Stack.Screen name="Menu usuario" component={MenuUsuario} />
         <Stack.Screen name="Pacientes" component={Pacientes} />
+        <Stack.Screen name="Registro de usuarios" component={Usuarios} />
       </Stack.Navigator>
     </NavigationContainer>  
   );

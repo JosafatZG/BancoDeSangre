@@ -37,10 +37,10 @@ export const CambioPass = () => {
 				</View>
 					<TouchableHighlight
               onPress={() => alert('Cambio de contraseña exitoso')}
-            >
-              <View style={styles.buttonContainer}>
-                <Text style={styles.button}>Cambiar contraseña</Text>
-              </View>
+          >
+            <View style={styles.buttonContainer}>
+              <Text style={styles.button}>Cambiar contraseña</Text>
+            </View>
           </TouchableHighlight>
 			</View>
     </>

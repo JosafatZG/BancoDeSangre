@@ -179,5 +179,15 @@ const styles = StyleSheet.create({
 		color: '#C43B58',
 		fontSize: 30,
 		marginLeft: 50
-	}
+	},
+	cajaTexto : {
+    height: 40,
+    width: 370,    
+    borderWidth: 2,
+    padding: 10,
+    color: '#C43B58',
+    fontSize: 15,  
+    borderRadius: 10,
+    borderColor: '#C43B58'  
+  },
 })

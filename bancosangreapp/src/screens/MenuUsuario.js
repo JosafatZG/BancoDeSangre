@@ -34,7 +34,7 @@ export const MenuUsuario = ({navigation}) => {
 						</View>	
 						<TouchableHighlight
 						 	style = {styles.contenedorinfo}
-							onPress = {() => alert('Control de pacientes')}
+							onPress = {() => navigation.navigate('Control de pacientes')}
 						>
 							<Text style = {styles.tituloOpciones}>Control de pacientes</Text>
 						</TouchableHighlight>						
@@ -50,7 +50,7 @@ export const MenuUsuario = ({navigation}) => {
 						</View>	
 						<TouchableHighlight
 						 	style = {styles.contenedorinfo}
-							onPress = {() => alert('Registro de donaciones')}
+							onPress = {() => navigation.navigate('Registro de bolsa')}
 						>
 							<Text style = {styles.tituloOpciones}>Registro de donaciones</Text>
 						</TouchableHighlight>						

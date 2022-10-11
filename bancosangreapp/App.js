@@ -9,6 +9,8 @@ import { MenuUsuario } from './src/screens/MenuUsuario';
 import { Pacientes } from './src/screens/Pacientes';
 import { Usuarios } from './src/screens/Usuarios';
 import { ControlUsuarios } from './src/screens/ControlUsuarios';
+import { ControlPacientes } from './src/screens/ControlPacientes';
+import { Donacion } from './src/screens/Donacion';
 
 export default function App() {  
   const Stack = createNativeStackNavigator();
@@ -22,6 +24,8 @@ export default function App() {
         <Stack.Screen name="Pacientes" component={Pacientes} />
         <Stack.Screen name="Registro de usuarios" component={Usuarios} />
         <Stack.Screen name="Control de usuarios" component={ControlUsuarios} />
+        <Stack.Screen name="Control de pacientes" component={ControlPacientes} />
+        <Stack.Screen name="Registro de bolsa" component={Donacion} />
       </Stack.Navigator>
     </NavigationContainer>  
   );

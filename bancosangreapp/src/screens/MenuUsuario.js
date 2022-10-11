@@ -3,7 +3,7 @@ import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, S
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export const MenuUsuario = () => {
+export const MenuUsuario = ({navigation}) => {
   return (
     <>		
 			<View>
@@ -18,7 +18,7 @@ export const MenuUsuario = () => {
 						</View>	
 						<TouchableHighlight
 						 	style = {styles.contenedorinfo}
-							onPress = {() => alert('Reegistro de pacientes')}
+							onPress = {() => navigation.navigate('Pacientes')}
 						>
 							<Text style = {styles.tituloOpciones}>Registro de pacientes</Text>
 						</TouchableHighlight>						

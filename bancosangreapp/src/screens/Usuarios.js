@@ -1,10 +1,48 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import customConfig from '../../custom-config.json';
 
 export const Usuarios = () => {
+	const[nombreU, setNombreU] = useState('');
+	const[correo, setCorreo] = useState('');
+	const[pass, setPass] = useState('');
+	const[repPass, setRepPass] = useState('');
+
+	const agregarUsuario = ()=> {
+		if(pass == repPass){
+			
+			const url = customConfig.apiURL + "Usuarios/";
+			var responseJ;
+			fetch(url,{
+				method: 'POST',
+				body:JSON.stringify({
+					nombreUsuario: nombreU,
+					correo: correo,
+					pwd: pass
+				}),
+				headers: {
+					'Content-type': 'application/json; charset=UTF-8'
+				}
+			})    			
+			.then(async function (response) {
+				if(response.status == 200){ //finded
+					responseJ = await response.json();					
+				}
+				else if(response.status == 500){ //connection lost
+					Alert.alert('Error', 'Intente de nuevo');
+				}
+				else{ //error
+					Alert.alert('Error', 'Credenciales inválidas');
+				}
+			}).then(function (data) {
+				console.log(data);
+			});			
+		}
+	}			
+
   return (
     <>
 			<View style = {styles.contenedorForm}>
@@ -13,7 +51,8 @@ export const Usuarios = () => {
 					<TextInput             
 							style = {styles.cajaTexto}
 							placeholder='Ingrese nombre de usuario'
-							placeholderTextColor= 'white'							
+							placeholderTextColor= 'white'	
+							onChangeText={(value) => setNombreU(value)}						
 					/>
 				</View>
 				<View style = {styles.contenedorCampos}>
@@ -22,7 +61,8 @@ export const Usuarios = () => {
 							style = {styles.cajaTexto}
 							keyboardType='email-address'
 							placeholder='Ingrese correo electronico'
-							placeholderTextColor= 'white'							
+							placeholderTextColor= 'white'	
+							onChangeText={(value) => setCorreo(value)}								
 					/>
 				</View>
 				<View style = {styles.contenedorCampos}>
@@ -31,7 +71,8 @@ export const Usuarios = () => {
 							style = {styles.cajaTexto}							
 							placeholder='Ingrese contraseña'
 							placeholderTextColor= 'white'			
-							secureTextEntry = {true}				
+							secureTextEntry = {true}		
+							onChangeText={(value) => setPass(value)}				
 					/>
 				</View>
 				<View style = {styles.contenedorCampos}>
@@ -40,11 +81,12 @@ export const Usuarios = () => {
 							style = {styles.cajaTexto}							
 							placeholder='Repita contraseña'
 							placeholderTextColor= 'white'			
-							secureTextEntry = {true}				
+							secureTextEntry = {true}		
+							onChangeText={(value) => setRepPass(value)}				
 					/>
 				</View>
 				<TouchableHighlight
-          onPress={() => alert('Usuario registrado exitosamente')}
+          onPress={() => agregarUsuario()}
         >
           <View style={styles.buttonContainer}>
             <Text style={styles.button}>Registrar usuario</Text>

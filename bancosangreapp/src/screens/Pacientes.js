@@ -89,7 +89,6 @@ export const Pacientes = ({ navigation }) => {
             onChangeText={(value) => setEdad(value)}
           />
           <Text style={styles.cardTitle}>Género</Text>
-          {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
           <RNPickerSelect
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el género", value: null }}
@@ -102,7 +101,6 @@ export const Pacientes = ({ navigation }) => {
             onValueChange = {(value=>setGen(value))}
           />
           <Text style={styles.cardTitle}>Tipo de sangre:</Text>
-          {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
           <RNPickerSelect
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el tipo de sangre", value: null }}
@@ -115,7 +113,6 @@ export const Pacientes = ({ navigation }) => {
             onValueChange = {(value=>setTipo(value))}
           />
           <Text style={styles.cardTitle}>Tipo RH:</Text>
-          {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
           <RNPickerSelect
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el tipo de RH", value: null }}

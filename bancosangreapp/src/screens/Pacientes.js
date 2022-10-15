@@ -31,9 +31,11 @@ export const Pacientes = ({ navigation }) => {
       body: JSON.stringify({
         nombres: nombresP,
         apellidos: apellidosP,
+        generoId: gen,
         edad: edad,
         tipoSangreId: tipo,
         tipoRHId: rh
+
       }),
       headers:{
         'Content-type': 'application/json; charset=UTF-8'
@@ -68,6 +70,7 @@ export const Pacientes = ({ navigation }) => {
             placeholder="Ejemplo: Harry Edward"
             placeholderTextColor={"white"}
             style={styles.cardText}
+            onChangeText={(value) => setNombresP(value)}	
           />
           <Text style={styles.cardTitle}>Apellidos:</Text>
           <TextInput
@@ -75,6 +78,7 @@ export const Pacientes = ({ navigation }) => {
             placeholder="Ejemplo: Styles"
             placeholderTextColor={"white"}
             style={styles.cardText}
+            onChangeText={(value) => setApellidosP(value)}
           />
           <Text style={styles.cardTitle}>Edad:</Text>
           <TextInput
@@ -82,6 +86,7 @@ export const Pacientes = ({ navigation }) => {
             placeholder="Ejemplo: 27"
             placeholderTextColor={"white"}
             style={styles.cardText}
+            onChangeText={(value) => setEdad(value)}
           />
           <Text style={styles.cardTitle}>Género</Text>
           {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
@@ -121,7 +126,7 @@ export const Pacientes = ({ navigation }) => {
             onValueChange = {(value=>setRH(value))}
           />
           <TouchableHighlight
-            onPress={() => alert("Registro de paciente realizado ")}
+            onPress={() => agregarPaciente()}
           >
             <View style={styles.buttonContainer}>
               <Text style={styles.button}>Agregar paciente</Text>

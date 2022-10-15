@@ -37,7 +37,7 @@ export const Usuarios = () => {
 					Alert.alert('Error', 'Intente de nuevo');
 				}
 				else{ //error
-					Alert.alert('Error', 'Credenciales inválidas');
+					Alert.alert('Error', 'Intente más tardes');
 				}
 				return Promise.reject(JSON.stringify(response));
 			}).then(function (data) {

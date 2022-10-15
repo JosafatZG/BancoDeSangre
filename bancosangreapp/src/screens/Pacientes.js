@@ -9,10 +9,55 @@ import {
   TouchableHighlight,
   ScrollView,
   picker,
+  Alert
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import { useState } from "react";
+import customConfig from '../../custom-config.json';
 
 export const Pacientes = ({ navigation }) => {
+  const[nombresP, setNombresP] = useState('');
+  const[apellidosP, setApellidosP] = useState('');
+	const[edad, setEdad] = useState('');
+	const[tipo, setTipo] = useState('');
+	const[rh, setRH] = useState('');
+  const[gen, setGen] = useState('');
+
+  const agregarPaciente = () => {
+    const url = customConfig.apiURL + "Pacientes/?";
+    var responseJ;
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        nombres: nombresP,
+        apellidos: apellidosP,
+        edad: edad,
+        tipoSangreId: tipo,
+        tipoRHId: rh
+      }),
+      headers:{
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    })
+    .then(async function (response) {
+      if(response.status == 200 || response.status == 201){
+        Alert.alert('Éxito', 'Paciente agregado correctamente');
+          responseJ = await response.json;
+      }
+      else if(response.status == 500){
+        Alert.alert('Error', 'Intente de nuevo');
+      }
+      else{
+        Alert.alert('Error', 'Intente más tarde');
+      }
+      return Promise.reject(JSON.stringify(response));
+    }).then(function (data){
+      console.log(data);
+    }).catch(function (error){
+      console.log(error);
+    });
+  }
+
   return (
     <>
       <View>
@@ -44,11 +89,12 @@ export const Pacientes = ({ navigation }) => {
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el género", value: null }}
             items={[
-              { label: "F", value: "F" },
-              { label: "M", value: "M" },
-              { label: "NR", value: "NR" },
-              { label: "O", value: "O" },
+              { label: "F", value: 2 },
+              { label: "M", value: 1 },
+              { label: "NR", value: 4 },
+              { label: "O", value: 3 },
             ]}
+            onValueChange = {(value=>setGen(value))}
           />
           <Text style={styles.cardTitle}>Tipo de sangre:</Text>
           {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
@@ -56,11 +102,12 @@ export const Pacientes = ({ navigation }) => {
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el tipo de sangre", value: null }}
             items={[
-              { label: "A", value: "A" },
-              { label: "B", value: "B" },
-              { label: "O", value: "O" },
-              { label: "AB", value: "AB" },
+              { label: "A", value: 2 },
+              { label: "B", value: 3 },
+              { label: "O", value: 4 },
+              { label: "AB", value: 1 },
             ]}
+            onValueChange = {(value=>setTipo(value))}
           />
           <Text style={styles.cardTitle}>Tipo RH:</Text>
           {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
@@ -68,9 +115,10 @@ export const Pacientes = ({ navigation }) => {
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el tipo de RH", value: null }}
             items={[
-              { label: "Positivo", value: "Positivo" },
-              { label: "Negativo", value: "Negativo" },
+              { label: "Positivo", value: 1 },
+              { label: "Negativo", value: 2 },
             ]}
+            onValueChange = {(value=>setRH(value))}
           />
           <TouchableHighlight
             onPress={() => alert("Registro de paciente realizado ")}

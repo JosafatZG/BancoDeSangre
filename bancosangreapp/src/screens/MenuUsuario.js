@@ -84,7 +84,7 @@ export const MenuUsuario = ({navigation}) => {
 						 	style = {styles.contenedorinfo}
 							onPress = {() => alert('Administración de bolsas de sangre')}
 						>
-							<Text style = {styles.tituloOpciones}>Administración de bolsas de sangre</Text>
+							<Text style = {styles.tituloOpciones1}>Administración de bolsas de sangre</Text>
 						</TouchableHighlight>						
 					</View>
 
@@ -98,7 +98,7 @@ export const MenuUsuario = ({navigation}) => {
 						</View>	
 						<TouchableHighlight
 						 	style = {styles.contenedorinfo}
-							onPress = {() => alert('Registro de transfusiones')}
+							 onPress = {() => navigation.navigate('Registro de bolsa')}
 						>
 							<Text style = {styles.tituloOpciones}>Registro de transfusiones</Text>
 						</TouchableHighlight>						
@@ -190,4 +190,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#C43B58'  
   },
+  tituloOpciones1: {
+	color: '#C43B58',
+	fontSize: 30,
+	marginLeft: 30
+},
 })

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight } from 'react-native';
+import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,7 +14,7 @@ export const Usuarios = () => {
 	const agregarUsuario = ()=> {
 		if(pass == repPass){
 			
-			const url = customConfig.apiURL + "Usuarios/";
+			const url = customConfig.apiURL + "Usuarios/?";
 			var responseJ;
 			fetch(url,{
 				method: 'POST',
@@ -39,7 +39,9 @@ export const Usuarios = () => {
 				}
 			}).then(function (data) {
 				console.log(data);
-			});			
+			}).catch(function (error){
+				console.log(error);
+			})		
 		}
 	}			
 
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
 	},
 	cajaTexto : {
     height: 40,
-    width: 350,
+    width: 330,
     marginTop: 15,
     borderWidth: 2,
     padding: 10,
@@ -134,6 +136,6 @@ const styles = StyleSheet.create({
     borderRadius:2,
 		width: 300,
 		alignItems: 'center',
-		marginLeft: 50
+		marginLeft: 35
   } 
 })

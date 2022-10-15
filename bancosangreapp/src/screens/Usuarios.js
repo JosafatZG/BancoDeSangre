@@ -28,8 +28,10 @@ export const Usuarios = () => {
 				}
 			})    			
 			.then(async function (response) {
-				if(response.status == 200){ //finded
-					responseJ = await response.json();					
+				if(response.status == 200 || response.status == 201){ //finded
+					Alert.alert('Éxito', 'Usuario creado correctamente');
+					responseJ = await response.json();	
+				
 				}
 				else if(response.status == 500){ //connection lost
 					Alert.alert('Error', 'Intente de nuevo');
@@ -37,11 +39,11 @@ export const Usuarios = () => {
 				else{ //error
 					Alert.alert('Error', 'Credenciales inválidas');
 				}
+				return Promise.reject(JSON.stringify(response));
 			}).then(function (data) {
 				console.log(data);
 			}).catch(function (error){
 				console.log(error);
-
 			})		
 		}
 	}			

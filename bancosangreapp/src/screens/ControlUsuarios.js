@@ -72,14 +72,14 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     marginTop:10,
     borderRadius:2,
-		width: 300,
+		width: 250,
 		alignItems: 'center',
 		marginLeft: 50		
   },
 	contenedorBuscador: {		
 		height: 50,
-		marginLeft: 20,
-		marginRight: 20
+		marginLeft: 10,
+		marginRight: 10,
 	},
 	cajaTexto : {
     height: 40,

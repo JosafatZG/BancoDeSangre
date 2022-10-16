@@ -14,6 +14,7 @@ import {
 import RNPickerSelect from "react-native-picker-select";
 import { useState } from "react";
 import customConfig from '../../custom-config.json';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 export const Pacientes = ({ navigation }) => {
   const[nombresP, setNombresP] = useState('');
@@ -22,8 +23,9 @@ export const Pacientes = ({ navigation }) => {
 	const[tipo, setTipo] = useState('');
 	const[rh, setRH] = useState('');
   const[gen, setGen] = useState('');
+  const[fechaNacimiento, setFechaNacimiento] = useState('');
 
-  const agregarPaciente = () => {
+  const agregarPaciente = () => {   
     const url = customConfig.apiURL + "Pacientes/?";
     var responseJ;
     fetch(url, {
@@ -31,6 +33,7 @@ export const Pacientes = ({ navigation }) => {
       body: JSON.stringify({
         nombres: nombresP,
         apellidos: apellidosP,
+        fechaNac: fechaNacimiento,  
         generoId: gen,
         edad: edad,
         tipoSangreId: tipo,
@@ -44,7 +47,7 @@ export const Pacientes = ({ navigation }) => {
     .then(async function (response) {
       if(response.status == 200 || response.status == 201){
         Alert.alert('Éxito', 'Paciente agregado correctamente');
-          responseJ = await response.json;
+          responseJ = await response.json;          
       }
       else if(response.status == 500){
         Alert.alert('Error', 'Intente de nuevo');
@@ -88,6 +91,16 @@ export const Pacientes = ({ navigation }) => {
             style={styles.cardText}
             onChangeText={(value) => setEdad(value)}
           />
+          <Text style={styles.cardTitle}>Fecha de nacimiento:</Text>
+          <RNDateTimePicker mode='date' style={styles.datePickerStyle}
+            format="DD-MM-YYYY"
+            value={new Date()}
+            display="calendar"
+            themeVariant="dark"
+            accentColor='lightblue'
+            
+          />
+
           <Text style={styles.cardTitle}>Género</Text>
           <RNPickerSelect
             style={pickerSelectStyles}
@@ -138,7 +151,7 @@ export const Pacientes = ({ navigation }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#C43B58",
-    height: 650,
+    height: 750,
     width: "97.5%",
     margin: 5,
     borderRadius: 14,
@@ -186,6 +199,17 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: 10,
     borderRadius: 2,
+  },
+  datePickerStyle: {
+    width: 200,
+    marginTop: 20,
+    borderColor:'white',
+    borderWidth:2,
+    borderRadius:10,
+    height:40,
+    alignItems:'center',
+    alignContent:'center',
+
   },
 });
 

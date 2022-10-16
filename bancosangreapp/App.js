@@ -11,6 +11,7 @@ import { Usuarios } from './src/screens/Usuarios';
 import { ControlUsuarios } from './src/screens/ControlUsuarios';
 import { ControlPacientes } from './src/screens/ControlPacientes';
 import { Donacion } from './src/screens/Donacion';
+import { EditUsuario } from './src/screens/EditUsuario';
 
 export default function App() {  
   const Stack = createNativeStackNavigator();
@@ -23,6 +24,7 @@ export default function App() {
         <Stack.Screen name="Menu usuario" component={MenuUsuario} />
         <Stack.Screen name="Pacientes" component={Pacientes} />
         <Stack.Screen name="Registro de usuarios" component={Usuarios} />
+        <Stack.Screen name="Editar usuario" component={EditUsuario} />
         <Stack.Screen name="Control de usuarios" component={ControlUsuarios} />
         <Stack.Screen name="Control de pacientes" component={ControlPacientes} />
         <Stack.Screen name="Registro de bolsa" component={Donacion} />

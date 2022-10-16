@@ -9,60 +9,17 @@ import { ScreenStackHeaderBackButtonImage } from 'react-native-screens';
 import axios from 'axios';
 
 
-export const ControlUsuarios = () => {
+export const ControlUsuarios = ({navigation}) => {
 	const[nombreU, setNombreU] = useState('');
 	const[usuario, setUsuario] = useState('');
 	const[correo, setCorreo] = useState('');
 	const[datos, setDatos] = useState([]);
-
-	/*const cargarDatos = async()=> {	
-		const url = customConfig.apiURL + "Usuarios/?";	
-		
-
-		try {
-			var responseJ;
-			await fetch(url)
-			.then(async function (response) {
-				if(response.status == 200){ //finded
-					responseJ = await response.json();		
-					d = responseJ; 																
-				}
-				else if(response.status == 500){ //connection lost
-					Alert.alert('Error', 'Intente de nuevo');
-				}
-				else{ //error
-					Alert.alert('Error', 'Credenciales inválidas');
-				}
-			}).then(function (data) {
-				console.log(data);				
-			});
-		console.log(responseJ);
-
-		}catch(error){
-			console.log(error)
-		}
-	}		
-
-	/*constructor(props){
-		super(props);
-
-		this.state = {
-			loading: false,
-			usuarios : [],
-			url: customConfig.apiURL + "Usuarios/?"
-		}
-	}
-
-	componentDidMount(){
-		this.getUsuarios();
-	}*/
-	
 	const[list, setList] = useState([]);
 	
 	const getList = () => {
 		var responseJ;
 		axios({
-			url: "http://artuzamora-001-site1.gtempurl.com/api/Usuarios/?",
+			url: customConfig.apiURL + "Usuarios/?",
 			method: 'GET'
 		}).then(async (response) => {
 			responseJ = await response.json
@@ -89,7 +46,8 @@ export const ControlUsuarios = () => {
 					list.map((item, index) => {
 					return(
 						<View key={index}>
-							<CardUsuarios 								
+							<CardUsuarios
+								navigation={navigation}							
 								nombre = {item.nombreUsuario}
 								correo = {item.correo}
 								id = {item.id}

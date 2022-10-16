@@ -9,11 +9,26 @@ export const Usuarios = () => {
 	const[nombreU, setNombreU] = useState('');
 	const[correo, setCorreo] = useState('');
 	const[pass, setPass] = useState('');
-	const[repPass, setRepPass] = useState('');
+	const[repPass, setRepPass] = useState('');  
+	const validateEmail = (email) => {
+		return String(email)
+		  .toLowerCase()
+		  .match(
+			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		  );
+	  };
 
 	const agregarUsuario = ()=> {
-		if(pass == repPass){
-			
+		if(nombreU == '' || correo == '' || pass == ''){
+			Alert.alert('Error','Existen campos vacíos')
+		}
+		else if(!validateEmail(correo)){
+			Alert.alert('Error','Debe ingresar un correo electrónico válido')
+		}
+		else if(pass != repPass){
+			Alert.alert('Error','Las contraseñas no coinciden')
+		}
+		else{
 			const url = customConfig.apiURL + "Usuarios/?";
 			var responseJ;
 			fetch(url,{

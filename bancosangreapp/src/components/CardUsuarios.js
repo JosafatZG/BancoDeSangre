@@ -10,7 +10,7 @@ export const CardUsuarios = ({key, nombre, correo, id}) => {
 	const eliminarU = (idEliminar) => {
 		var responseJ;
 		axios({
-			url: "http://artuzamora-001-site1.gtempurl.com/api/Usuarios/"+idEliminarr,
+			url: "http://artuzamora-001-site1.gtempurl.com/api/Usuarios/"+idEliminar,
 			method: 'DELETE'
 		}).then(async (response) => {
 			responseJ = await response.json

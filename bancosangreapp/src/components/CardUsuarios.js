@@ -3,8 +3,21 @@ import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, S
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import axios from 'axios';
 
 export const CardUsuarios = ({key, nombre, correo, id}) => {
+
+	const eliminarU = (idEliminar) => {
+		var responseJ;
+		axios({
+			url: "http://artuzamora-001-site1.gtempurl.com/api/Usuarios/"+idEliminarr,
+			method: 'DELETE'
+		}).then(async (response) => {
+			responseJ = await response.json
+			alert('Usuario eliminado correctamente')
+		})
+	}
+
   return (
     <>
       <View>
@@ -12,7 +25,7 @@ export const CardUsuarios = ({key, nombre, correo, id}) => {
 					<Text style = {styles.informacion}>Usuario: {nombre}</Text>
 					<Text style = {styles.informacion}>Correo: {correo}</Text>	
 					<TouchableHighlight
-        		onPress={() => alert('Usuario eliminado exitosamente')}
+        		onPress={() => eliminarU(id)}
       		>
 						<View style={styles.buttonContainer}>
 							<Text style={styles.button}>Eliminar usuario</Text>

@@ -60,3 +60,5 @@ Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 In
 >Enlace video--> https://youtu.be/2RcTvOexjSE
 
 >Enlace repositorio API--> https://github.com/JosafatZG/BancoDeSangreAPI.git
+
+>API Alojada(swagger page)--> http://artuzamora-001-site1.gtempurl.com/swagger/index.html

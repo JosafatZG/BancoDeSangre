@@ -1,29 +1,34 @@
 import * as React from "react";
-import {
-  Button,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  TouchableHighlight,
-  ScrollView,
-  picker,
-  Alert
-} from "react-native";
+import {Button,View,Text,StyleSheet, Image,TextInput,TouchableHighlight,ScrollView,picker,Alert} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { useState } from "react";
 import customConfig from '../../custom-config.json';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export const Pacientes = ({ navigation }) => {
   const[nombresP, setNombresP] = useState('');
   const[apellidosP, setApellidosP] = useState('');
-	const[edad, setEdad] = useState('');
 	const[tipo, setTipo] = useState('');
 	const[rh, setRH] = useState('');
   const[gen, setGen] = useState('');
   const[fechaNacimiento, setFechaNacimiento] = useState('');
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+    };
+  
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+    };
+
+    const confirmarFecha = date => {
+      const opciones = { year: 'numeric', month: 'long', day: "2-digit" };
+      guardarFecha(date.toLocaleDateString('es-ES', opciones));
+      hideDatePicker();
+      };
 
   const agregarPaciente = () => {   
     const url = customConfig.apiURL + "Pacientes/?";
@@ -35,7 +40,6 @@ export const Pacientes = ({ navigation }) => {
         apellidos: apellidosP,
         fechaNac: fechaNacimiento,  
         generoId: gen,
-        edad: edad,
         tipoSangreId: tipo,
         tipoRHId: rh
 
@@ -83,23 +87,25 @@ export const Pacientes = ({ navigation }) => {
             style={styles.cardText}
             onChangeText={(value) => setApellidosP(value)}
           />
-          <Text style={styles.cardTitle}>Edad:</Text>
-          <TextInput
-            keyboardType="numeric"
-            placeholder="Ejemplo: 27"
-            placeholderTextColor={"white"}
-            style={styles.cardText}
-            onChangeText={(value) => setEdad(value)}
-          />
           <Text style={styles.cardTitle}>Fecha de nacimiento:</Text>
-          <RNDateTimePicker mode='date' style={styles.datePickerStyle}
-            format="DD-MM-YYYY"
-            value={new Date()}
-            display="calendar"
-            themeVariant="dark"
-            accentColor='lightblue'
-            
+          <View>
+          <TouchableHighlight onPress={showDatePicker}>
+            <View style={styles.buttonContainer2}>
+              <Text style={styles.button2}>Seleccionar donante</Text>
+            </View>
+          </TouchableHighlight>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="datetime"
+            onConfirm={confirmarFecha}
+            onCancel={hideDatePicker}
+            locale='es_ES'
+            headerTextIOS="Elige la fecha"
+            cancelTextIOS="Cancelar"
+            confirmTextIOS="Confirmar"
           />
+          <Text>{fechaNacimiento}</Text>
+          </View>
 
           <Text style={styles.cardTitle}>Género</Text>
           <RNPickerSelect
@@ -201,15 +207,27 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   datePickerStyle: {
-    width: 200,
+    width: 300,
     marginTop: 20,
     borderColor:'white',
     borderWidth:2,
     borderRadius:10,
-    height:40,
+    height:150,
     alignItems:'center',
     alignContent:'center',
 
+  },
+  button2: {
+    fontSize: 20,
+    color: "white",
+    padding: 8,
+  },
+  buttonContainer2: {
+    backgroundColor: "#C43B58",
+    marginTop: 10,
+    borderRadius: 10,
+    borderColor:'white',
+    borderWidth:2
   },
 });
 
@@ -238,4 +256,5 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: "white",
     marginLeft: 15,
   },
+  
 });

@@ -1,9 +1,83 @@
-import * as React from 'react';
-import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight } from 'react-native';
+import React, { useState } from 'react';
+import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import customConfig from '../../custom-config.json';
 
 export const RecuperacionPass = ({ navigation }) => {  
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const sendCode = async () => {
+    if(!validateEmail(email)){
+      Alert.alert('Advertencia', 'Debes ingresar un correo electrónico válido');
+    }
+    else{
+      const url =
+        customConfig.apiURL + "Usuarios/SendConfirmationNumber?" + new URLSearchParams({
+          correo: email
+        });
+      try {
+        await fetch(url)
+          .then(async function (response) {
+            if(response.status == 500){ //connection lost
+              Alert.alert('Error', 'Intente de nuevo');
+            }
+            else{
+              Alert.alert('Revisa tu correo', 'Se ha enviado un código de confirmación a tu correo');
+            }
+          }).then(function (data) {
+            console.log(data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const verifyCode = async () => {
+    if(!validateEmail(email)){
+      Alert.alert('Advertencia', 'Debes ingresar un correo electrónico válido');
+    }
+    else{
+      const url =
+        customConfig.apiURL + "Usuarios/CheckConfirmationNumber?" + new URLSearchParams({
+          correo: email,
+          codigoRecuperacion: code
+        });
+      try {
+        await fetch(url)
+          .then(async function (response) {
+            if(response.status == 500){ //connection lost
+              Alert.alert('Error', 'Intente de nuevo');
+            }
+            else{
+              var responseJ = await response.json();
+              if(responseJ){
+                navigation.navigate('Cambio de contraseña', {
+                  email: email,
+              })
+              }
+              else{
+                Alert.alert('Error', 'Código inválido');
+              }
+            }
+          }).then(function (data) {
+            //console.log(data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <>
       <View style={styles.contenedorimg}>      
@@ -20,8 +94,9 @@ export const RecuperacionPass = ({ navigation }) => {
             style = {styles.cajaTexto}
             placeholder='Ingrese correo electrónico '
             placeholderTextColor= 'white'
+            onChangeText={(value) => setEmail(value)}
           />
-          <TouchableHighlight>
+          <TouchableHighlight onPressOut={() => {sendCode()}}>
             <View style={styles.buttonContainer}>
               <Text style={styles.button}>Aceptar</Text>
             </View>
@@ -34,9 +109,10 @@ export const RecuperacionPass = ({ navigation }) => {
             style = {styles.cajaTexto}
             placeholder='Ingrese código'
             placeholderTextColor= 'white'
+            onChangeText={(value) => setCode(value)}
           />
             <TouchableHighlight
-              onPress={() => navigation.navigate('Cambio de contraseña')}
+              onPress={() => verifyCode()}
             >
               <View style={styles.buttonContainer}>
                 <Text style={styles.button}>Ingresar</Text>

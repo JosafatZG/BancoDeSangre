@@ -57,4 +57,6 @@ Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 In
 
 >Mockups --> https://drive.google.com/drive/folders/1Knik_IcuUlrIlE6LWLARQcbyCTMe64_q?usp=sharing
 
->Enlace video--> 
+>Enlace video--> https://youtu.be/2RcTvOexjSE
+
+>Enlace repositorio API--> https://github.com/JosafatZG/BancoDeSangreAPI.git

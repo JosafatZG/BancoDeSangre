@@ -50,3 +50,9 @@ Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 In
 >Documento con los Mockups--> https://drive.google.com/file/d/1q8lgtrUZjXR4Oh153vEjB7U_Bz0WWO8l/view?usp=sharing
 
 >Documento Fase 1--> https://drive.google.com/file/d/1FEmhgGE4GsTEK5OubVtczDz23RnxmPws/view?usp=sharing
+
+>Manual Técnico--> https://drive.google.com/file/d/1DR8AdyBMfa0kiIhC7INKhr7qnnbkNHRv/view?usp=drivesdk
+
+>Manual de Usuario--> https://drive.google.com/file/d/1D2DlMAXQ9l21xvD7JHTKQOlwzpMPQzZo/view?usp=drivesdk
+
+

@@ -13,8 +13,8 @@ export const Pacientes = ({ navigation }) => {
   const[gen, setGen] = useState('');
   const[fechaNacimiento, setFechaNacimiento] = useState('');
 
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -26,7 +26,8 @@ export const Pacientes = ({ navigation }) => {
 
     const confirmarFecha = date => {
       const opciones = { year: 'numeric', month: 'long', day: "2-digit" };
-      guardarFecha(date.toLocaleDateString('es-ES', opciones));
+      //setFechaNacimiento(date.toLocaleDateString('es-ES', opciones));
+      setFechaNacimiento('2022-10-25T02:55:45.490Z');
       hideDatePicker();
       };
 
@@ -91,20 +92,22 @@ export const Pacientes = ({ navigation }) => {
           <View>
           <TouchableHighlight onPress={showDatePicker}>
             <View style={styles.buttonContainer2}>
-              <Text style={styles.button2}>Seleccionar donante</Text>
+              <Text style={styles.button2}>Seleccionar fecha de nacimiento</Text>
             </View>
           </TouchableHighlight>
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
-            mode="datetime"
+            mode="date"
             onConfirm={confirmarFecha}
             onCancel={hideDatePicker}
             locale='es_ES'
             headerTextIOS="Elige la fecha"
             cancelTextIOS="Cancelar"
-            confirmTextIOS="Confirmar"
+            confirmTextIOS="Confirmar"   
+            style = {styles.inputIOSDate}    
+            isDarkModeEnabled= "true"     
           />
-          <Text>{fechaNacimiento}</Text>
+          <Text style={styles.textDate}>{fechaNacimiento}</Text>
           </View>
 
           <Text style={styles.cardTitle}>Género</Text>
@@ -229,6 +232,23 @@ const styles = StyleSheet.create({
     borderColor:'white',
     borderWidth:2
   },
+  inputIOSDate: {
+    height: 150,
+    width: 350,
+    marginTop: 15,
+    borderWidth: 2,
+    padding: 10,
+    fontSize: 15,
+    borderRadius: 10,
+    marginLeft: 15,
+    color: "black",
+  },
+  textDate:{
+    color: 'white',
+    fontWeight:'bold',
+    fontSize:17,
+    marginTop:5
+  }
 });
 
 const pickerSelectStyles = StyleSheet.create({
@@ -256,5 +276,5 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: "white",
     marginLeft: 15,
   },
-  
+
 });

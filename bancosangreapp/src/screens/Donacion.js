@@ -5,33 +5,68 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
 import  { useState } from 'react'
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-
+import customConfig from '../../custom-config.json';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 export const Donacion = () => {
+  const[fechaDonacion, setDonacion] = useState('');
+  const[tipoBolsaId, setTipoBolsa] = useState('');
+  const[cantidadMl, setCantidadMl] = useState('');
+  const[donanteId, setDonanteId] = useState('');
+  const[receptorId, setReceptorId] = useState('');
+  //const[fechaAplicacion, setAplicacion] = useState('');
+
   const[modalVisible , setModalVisible] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+    };
+  
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+    };
+
+    const confirmarFecha = date => {
+      const opciones = { year: 'numeric', month: '2-digit', day: "2-digit" };
+      setDonacion(date.toLocaleDateString('fr-CA', opciones));
+      //setFechaNacimiento('2022-10-25T02:55:45.490Z');
+      hideDatePicker();
+      };
 
   return (
     <>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Fecha de donación:</Text>
-          <RNDateTimePicker mode='date' style={styles.datePickerStyle}
-            format="DD-MM-YYYY"
-            value={new Date()}
-            display="calendar"
-            themeVariant="dark"
-            accentColor='lightblue'
+          <View>
+          <TouchableHighlight onPress={showDatePicker}>
+            <View style={styles.buttonContainer2}>
+              <Text style={styles.button2}>Seleccionar fecha de nacimiento</Text>
+            </View>
+          </TouchableHighlight>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={confirmarFecha}
+            onCancel={hideDatePicker}
+            locale='es-ES'
+            headerTextIOS="Elige la fecha"
+            cancelTextIOS="Cancelar"
+            confirmTextIOS="Confirmar"   
+            style = {styles.inputIOSDate}    
+            isDarkModeEnabled= 'true'     
           />
+          <Text style={styles.textDate}>{fechaDonacion}</Text>
+          </View>
           <Text style={styles.cardTitle}>Tipo de bolsa:</Text>
-          {/**CUANDO YA VAYAN A PROGRAMAR quitenle el comenario */}
-          {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
           <RNPickerSelect
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el tipo de bolsa", value: null }}
             items={[
-              { label: "Plaquetas", value: "Plaquetas" },
-              { label: "Plasma", value: "Plasma" },
-              { label:"Sangre", value:"Sangre"}
+              { label: "Plaquetas", value: 3 },
+              { label: "Plasma", value: 2 },
+              { label:"Sangre", value: 1}
             ]}
+            onValueChange = {(value=>setTipoBolsa(value))}
           />
           <Text style={styles.cardTitle}>Cantidad:</Text>
           <TextInput
@@ -290,6 +325,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight:'bold'
   },
+  inputIOSDate: {
+    height: 150,
+    width: 350,
+    marginTop: 15,
+    borderWidth: 2,
+    padding: 10,
+    fontSize: 15,
+    borderRadius: 10,
+    marginLeft: 15,
+    color: "black",
+  },
+  textDate:{
+    color: 'white',
+    fontWeight:'bold',
+    fontSize:17,
+    marginTop:5
+  }
 })
 
 const pickerSelectStyles = StyleSheet.create({

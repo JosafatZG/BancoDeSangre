@@ -25,9 +25,9 @@ export const Pacientes = ({ navigation }) => {
     };
 
     const confirmarFecha = date => {
-      const opciones = { year: 'numeric', month: 'long', day: "2-digit" };
-      //setFechaNacimiento(date.toLocaleDateString('es-ES', opciones));
-      setFechaNacimiento('2022-10-25T02:55:45.490Z');
+      const opciones = { year: 'numeric', month: '2-digit', day: "2-digit" };
+      setFechaNacimiento(date.toLocaleDateString('fr-CA', opciones));
+      //setFechaNacimiento('2022-10-25T02:55:45.490Z');
       hideDatePicker();
       };
 
@@ -100,12 +100,12 @@ export const Pacientes = ({ navigation }) => {
             mode="date"
             onConfirm={confirmarFecha}
             onCancel={hideDatePicker}
-            locale='es_ES'
+            locale='es-ES'
             headerTextIOS="Elige la fecha"
             cancelTextIOS="Cancelar"
             confirmTextIOS="Confirmar"   
             style = {styles.inputIOSDate}    
-            isDarkModeEnabled= "true"     
+            isDarkModeEnabled= 'true'     
           />
           <Text style={styles.textDate}>{fechaNacimiento}</Text>
           </View>

@@ -4,11 +4,31 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
+import axios from 'axios';
+import customConfig from '../../custom-config.json';
 
 export const CardPacientes = ({navigation, nombre,apellido, tipoSangre, tipoRH,id}) => {
 	const[modalVisible , setModalVisible] = useState(false);
-
-    
+	const[nombreTS, setNombreTS] = useState('');
+	const[nombreRH, setNombreRH] = useState('');
+		
+	var responseJ;
+		axios({
+			url: customConfig.apiURL + "TipoSangre/" + tipoSangre,
+			method: 'GET'
+		}).then(async (response) => {
+			responseJ = await response.json			
+			setNombreTS(response.data["nombreTS"])
+		})
+		
+		var responseJ2;
+		axios({
+			url: customConfig.apiURL + "TipoRH/" + tipoRH,
+			method: 'GET'
+		}).then(async (response) => {
+			responseJ = await response.json			
+			setNombreRH(response.data["nombreRH"])
+		})
 
   return (
     <>
@@ -19,8 +39,8 @@ export const CardPacientes = ({navigation, nombre,apellido, tipoSangre, tipoRH,i
 					>
 						<View style = {styles.contenedorContenido}>
 							<Text style = {styles.informacion}>Paciente: {nombre} {apellido}</Text>
-							<Text style = {styles.informacion2}>Tipo de sangre: {tipoSangre}</Text>
-							<Text style = {styles.informacion}>Tipo de RH: {tipoRH}</Text>
+							<Text style = {styles.informacion2}>Tipo de sangre: {nombreTS}</Text>
+							<Text style = {styles.informacion}>Tipo de RH: {nombreRH}</Text>
 						</View>
 					</TouchableHighlight>
 				</View>

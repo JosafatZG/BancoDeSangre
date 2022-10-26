@@ -31,6 +31,7 @@ export const ControlPacientes = ({navigation}) => {
 	useEffect(() => {
 		getList();
 	},[])
+	
 
   return (
     <>

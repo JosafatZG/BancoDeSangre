@@ -1,63 +1,29 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState } from 'react'
 import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView , Modal, Pressable} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
-import axios from 'axios';
-import customConfig from '../../custom-config.json';
-import { CardPacientes } from '../components/CardPacientes';
 
-export const ControlPacientes = ({navigation}) => {
+export const CardPacientes = ({navigation, nombre, tipoSangre, tipoRH,id}) => {
 	const[modalVisible , setModalVisible] = useState(false);
 
-	const[nombresP, setNombreP] = useState('');
-	const[apellidosP, setApellidosP] = useState('');
-	const[fechaNac, setFechaNac] = useState('');
-	const[tipoSangre, setTipoSangre] = useState('');
-	const[tipoRH, setTipoRH] = useState('');
-	const[datos, setDatos] = useState([]);
-	const[list, setList] = useState([]);
-
-	const getList = () => {
-		var responseJ;
-		axios({
-			url: customConfig.apiURL + "Pacientes/?",
-			method: 'GET'
-		}).then(async (response) => {
-			responseJ = await response.json
-			setList(response.data)
-		})
-	}
-	useEffect(() => {
-		getList();
-	},[])
+    
 
   return (
     <>
-      <View style= {styles.contenedorBuscador}>
-				<TextInput             
-					style = {styles.cajaTexto}							
-					placeholder='Ingrese usuario para buscar'
-					placeholderTextColor= '#C43B58'										
-				/>
-			</View>
 			<ScrollView>
-				{
-					list.map((item,index)=> {
-						return(
-							<View key={index}>
-								<CardPacientes
-									navigation={navigation}
-									nombre={item.nombresP}
-									tipoSangre={item.tipoSangre}
-									tipoRH={item.tipoRH}
-									id={item.id}
-								/>
-							</View>
-						)
-					})
-				}
+				<View style = {styles.cartaPaciente}>
+					<TouchableHighlight 
+						onPress={() => setModalVisible(true)}
+					>
+						<View style = {styles.contenedorContenido}>
+							<Text style = {styles.informacion}>Paciente: {nombre}</Text>
+							<Text style = {styles.informacion2}>Tipo de sangre: {tipoSangre}</Text>
+							<Text style = {styles.informacion}>Tipo de RH: {tipoRH}</Text>
+						</View>
+					</TouchableHighlight>
+				</View>
 			</ScrollView>
 
 			<Modal

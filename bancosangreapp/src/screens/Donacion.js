@@ -53,7 +53,7 @@ export const Donacion = () => {
             cancelTextIOS="Cancelar"
             confirmTextIOS="Confirmar"   
             style = {styles.inputIOSDate}    
-            isDarkModeEnabled= 'true'     
+            isDarkModeEnabled= {true}     
           />
           <Text style={styles.textDate}>{fechaDonacion}</Text>
           </View>
@@ -89,7 +89,7 @@ export const Donacion = () => {
             onPress={() => alert("Registro de bolsa realizado ")}
           >
             <View style={styles.buttonContainer}>
-              <Text style={styles.button}>Agregar paciente</Text>
+              <Text style={styles.button}>Agregar bolsa</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -103,7 +103,7 @@ export const Donacion = () => {
               <View style= {styles.contenedorBuscador}>
                 <TextInput             
                 style = {styles.cajaTexto}							
-                placeholder='Ingrese usuario para buscar'
+                placeholder='Ingrese donante para buscar'
                 placeholderTextColor= '#C43B58'										
                 />
               </View>

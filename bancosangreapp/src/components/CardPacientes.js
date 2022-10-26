@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
 
-export const CardPacientes = ({navigation, nombre, tipoSangre, tipoRH,id}) => {
+export const CardPacientes = ({navigation, nombre,apellido, tipoSangre, tipoRH,id}) => {
 	const[modalVisible , setModalVisible] = useState(false);
 
     
@@ -18,7 +18,7 @@ export const CardPacientes = ({navigation, nombre, tipoSangre, tipoRH,id}) => {
 						onPress={() => setModalVisible(true)}
 					>
 						<View style = {styles.contenedorContenido}>
-							<Text style = {styles.informacion}>Paciente: {nombre}</Text>
+							<Text style = {styles.informacion}>Paciente: {nombre} {apellido}</Text>
 							<Text style = {styles.informacion2}>Tipo de sangre: {tipoSangre}</Text>
 							<Text style = {styles.informacion}>Tipo de RH: {tipoRH}</Text>
 						</View>
@@ -54,10 +54,10 @@ export const CardPacientes = ({navigation, nombre, tipoSangre, tipoRH,id}) => {
 								style={pickerSelectStyles}
 								placeholder={{ label: "Seleccione el tipo de sangre", value: null}}								
 								items={[
-									{ label: "A", value: "A" },
-									{ label: "B", value: "B" },
-									{ label: "O", value: "O" },
-									{ label: "AB", value: "AB" },
+									{ label: "A", value: 2 },
+									{ label: "B", value: 3 },
+									{ label: "O", value: 4 },
+									{ label: "AB", value: 1 },
 								]}
 							/>
 
@@ -66,8 +66,8 @@ export const CardPacientes = ({navigation, nombre, tipoSangre, tipoRH,id}) => {
 								style={pickerSelectStyles}
 								placeholder={{ label: "Seleccione el tipo de sangre", value: null}}								
 								items={[
-									{ label: "Positivo", value: "Positivo" },
-									{ label: "Negativo", value: "Negativo" },
+									{ label: "Positivo", value: 1 },
+									{ label: "Negativo", value: 2 },
             		]}
 							/>
 							</View>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView , Modal, Pressable} from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView , Modal, Pressable, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,7 +11,11 @@ export const CardPacientes = ({navigation, nombre,apellido, tipoSangre, tipoRH,i
 	const[modalVisible , setModalVisible] = useState(false);
 	const[nombreTS, setNombreTS] = useState('');
 	const[nombreRH, setNombreRH] = useState('');
-		
+	const[nombrePaciente,setNombrePaciente] = useState('');
+	const[apellidoPaciente,setApellidoPaciente] = useState('');
+	const[tipoSangreUp,setTipoSangreUp] = useState('');
+	const[tipoRHUp,setTipoRHUp] = useState('');
+
 	var responseJ;
 		axios({
 			url: customConfig.apiURL + "TipoSangre/" + tipoSangre,
@@ -28,7 +32,79 @@ export const CardPacientes = ({navigation, nombre,apellido, tipoSangre, tipoRH,i
 		}).then(async (response) => {
 			responseJ = await response.json			
 			setNombreRH(response.data["nombreRH"])
-		})
+		})		
+
+		useEffect(() =>{
+			setNombrePaciente(nombre);
+			setApellidoPaciente(apellido);	
+			setTipoSangreUp(tipoSangre);
+			setTipoRHUp(tipoRH);
+		},[])
+
+		const eliminarPaciente = (idEliminar) => {
+			Alert.alert(
+				"Advertencia",
+				"¿Estas seguro de querer eliminar el paciente?",
+				[
+					{
+						text: "Sí",
+						onPress: () => {
+							var responseJ;
+							axios({
+								url: "http://artuzamora-001-site1.gtempurl.com/api/Pacientes/" + idEliminar,
+								method: 'DELETE'
+							}).then(async (response) => {
+								//responseJ = await response.json
+								Alert.alert('Eliminado','Paciente eliminado correctamente');
+								setModalVisible(!modalVisible)
+							})
+						},
+					},
+					{
+						text: "No",
+					},
+				]
+			);
+		}		
+
+		const modificarPaciente = ()=> {
+			if(nombrePaciente == ''){
+				alert('Debe de ingresar nombre')
+			} else if(apellidoPaciente == ''){
+				alert('Debe de ingresar apellido')
+			} else {
+				const url = customConfig.apiURL + "Pacientes/?" + new URLSearchParams({
+					id: id,
+					nombres: nombrePaciente,
+					apellidos: apellidoPaciente,
+					tipoSangreId: tipoSangreUp,
+					tipoRHId: tipoRHUp
+				});
+				fetch(url,
+					{
+						method: 'PUT',
+						headers: {
+							'Content-type': 'application/json; charset=UTF-8'
+						}
+					})
+					.then(async function (response) {
+						console.log(response.status)
+						if (response.status == 200 || response.status == 201) { //finded
+							Alert.alert('Éxito', 'Paciente editado correctamente');							
+						}
+						else if (response.status == 500) { //connection lost
+							Alert.alert('Error', 'Intente de nuevo');
+						}
+						else { //error
+							Alert.alert('Error', 'Intente más tarde');
+						}
+					}).then(function (data) {
+						console.log(data);
+					}).catch(function (error) {
+						console.log(error);
+					})
+			}
+		}
 
   return (
     <>
@@ -58,15 +134,18 @@ export const CardPacientes = ({navigation, nombre,apellido, tipoSangre, tipoRH,i
 								<Text style = {styles.informacionModal}>Nombre:</Text>
 								<TextInput             
 									style = {styles.cajaTextoModal}							
-									placeholder='Ingrese nombre'
-									placeholderTextColor= '#C43B58'										
+									placeholder = {nombrePaciente}
+									placeholderTextColor= '#C43B58'		
+									value = {nombrePaciente}
+									onChangeText={(e) => setNombrePaciente(e)}									
 								/>
 
 							<Text style = {styles.informacionModal}>Apellido:</Text>
 								<TextInput             
 									style = {styles.cajaTextoModal}							
-									placeholder='Ingrese apellido'
-									placeholderTextColor= '#C43B58'										
+									placeholder = {apellidoPaciente}
+									placeholderTextColor= '#C43B58'	
+									onChangeText = {(e) => {setApellidoPaciente(e)}}																		
 								/>
 
 							<Text style = {styles.informacionModal}>Tipo de sangre:</Text>
@@ -79,28 +158,32 @@ export const CardPacientes = ({navigation, nombre,apellido, tipoSangre, tipoRH,i
 									{ label: "O", value: 4 },
 									{ label: "AB", value: 1 },
 								]}
+								onValueChange = {(e) => {}}
 							/>
 
 							<Text style = {styles.informacionModal}>Tipo de RH:</Text>
-							<RNPickerSelect
+							<RNPickerSelect								
 								style={pickerSelectStyles}
 								placeholder={{ label: "Seleccione el tipo de sangre", value: null}}								
 								items={[
 									{ label: "Positivo", value: 1 },
 									{ label: "Negativo", value: 2 },
-            		]}
+            		]}														
+								onValueChange = {(e) => {}}
 							/>
 							</View>
 						</View>
 						<View style = {styles.buttonContainer}>
 							<TouchableHighlight
 								style = {styles.button2}
+								onPress = {() =>modificarPaciente(id, nombrePaciente, apellidoPaciente, tipoSangreUp, tipoRHUp)}
 							>
 								<Text style = {styles.txtBtnModal}>Actualizar</Text>
 							</TouchableHighlight>	
 
 							<TouchableHighlight
 								style = {styles.button2}
+								onPress = {() => eliminarPaciente(id)}
 							>
 								<Text style = {styles.txtBtnModal}>Eliminar</Text>
 							</TouchableHighlight>		

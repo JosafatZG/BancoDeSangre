@@ -17,6 +17,7 @@ export const ControlPacientes = ({navigation}) => {
 	const[tipoSangre, setTipoSangre] = useState('');
 	const[tipoRH, setTipoRH] = useState('');
 	const[list, setList] = useState([]);
+	const[pacienteBuscar, setPacienteBuscar] = useState('');
 
 	const getList = () => {
 		var responseJ;
@@ -24,14 +25,41 @@ export const ControlPacientes = ({navigation}) => {
 			url: customConfig.apiURL + "Pacientes/?",
 			method: 'GET'
 		}).then(async (response) => {
-			responseJ = await response.json
-			setList(response.data)
+			responseJ = await response.json			
+			setList(response.data)			
 		})
 	}
 	useEffect(() => {
 		getList();
-	},[])
+	})	
 	
+	const buscarPaciente = async (nombre) => {
+    const url =
+      customConfig.apiURL + "Pacientes/Buscar?" + new URLSearchParams({
+        nombres: nombre,       
+      });
+    try {
+      var responseJ;
+      await fetch(url)
+        .then(async function (response) {
+          if(response.status == 200){ //finded
+            responseJ = await response.json();
+            alert(response.data);
+          }
+          else if(response.status == 500){ //connection lost
+            Alert.alert('Error', 'Intente de nuevo');
+          }
+          else{ //error
+            Alert.alert('Error', 'Credenciales inválidas');
+          }
+        }).then(function (data) {
+          console.log(data);
+        });
+      console.log(responseJ);
+    } catch (error) {
+      console.log(error);
+    }
+	}
 
   return (
     <>
@@ -39,26 +67,28 @@ export const ControlPacientes = ({navigation}) => {
 				<TextInput             
 					style = {styles.cajaTexto}							
 					placeholder='Ingrese usuario para buscar'
-					placeholderTextColor= '#C43B58'										
+					placeholderTextColor= '#C43B58'	
+					//onKeyPress={(e) => {buscarPaciente(e)}}									
 				/>
 			</View>
-			<ScrollView>
-				{
-					list.map((item,index)=> {
-						return(
-							<View key={index}>
-								<CardPacientes
-									navigation={navigation}
-									nombre={item.nombres}
-									apellido={item.apellidos}
-									tipoSangre={item.tipoSangreId}
-									tipoRH={item.tipoRHId}
-									id={item.id}
-								/> 
-							</View>
-						)
-					})
-				}
+			<ScrollView>				
+					{	
+						
+						list.map((item,index)=> {
+							return(
+								<View key={index} >
+									<CardPacientes
+										navigation={navigation}
+										nombre={item.nombres}
+										apellido={item.apellidos}
+										tipoSangre={item.tipoSangreId}
+										tipoRH={item.tipoRHId}
+										id={item.id}
+									/> 
+								</View>
+							)
+						})				
+					}				
 			</ScrollView>
     </>
   )

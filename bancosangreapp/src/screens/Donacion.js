@@ -7,13 +7,34 @@ import RNPickerSelect from "react-native-picker-select";
 import  { useState } from 'react'
 import customConfig from '../../custom-config.json';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-export const Donacion = () => {
+import { useEffect } from 'react';
+import axios from 'axios';
+import { CardPacientesModal } from '../components/CardPacientesModal';
+
+export const Donacion = (navigation) => {
   const[fechaDonacion, setDonacion] = useState('');
   const[tipoBolsaId, setTipoBolsa] = useState('');
   const[cantidadMl, setCantidadMl] = useState('');
   const[donanteId, setDonanteId] = useState('');
   const[receptorId, setReceptorId] = useState('');
   //const[fechaAplicacion, setAplicacion] = useState('');
+
+  //para modal pacientes
+  const[list, setList] = useState([]);
+
+  const getList = () => {
+		var responseJ;
+		axios({
+			url: customConfig.apiURL + "Pacientes/?",
+			method: 'GET'
+		}).then(async (response) => {
+			responseJ = await response.json			
+			setList(response.data)			
+		})
+	}
+	useEffect(() => {
+		getList();
+	})
 
   const[modalVisible , setModalVisible] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -53,7 +74,7 @@ export const Donacion = () => {
             cancelTextIOS="Cancelar"
             confirmTextIOS="Confirmar"   
             style = {styles.inputIOSDate}    
-            isDarkModeEnabled= {true}     
+            isDarkModeEnabled= 'true'     
           />
           <Text style={styles.textDate}>{fechaDonacion}</Text>
           </View>
@@ -107,20 +128,25 @@ export const Donacion = () => {
                 placeholderTextColor= '#C43B58'										
                 />
               </View>
-              <View style = {styles.cartaPaciente}>
-                <View style = {styles.contenedorContenido}>
-                  <Text style = {styles.informacion}>Paciente: Antonio Merino</Text>
-                  <Text style = {styles.informacion2}>Tipo de sangre: A</Text>
-                  <Text style = {styles.informacion}>Tipo de RH: Negativo</Text>
-                  <TouchableHighlight
-                     onPress={() => alert("Paciente seleccionado")}
-                  >
-                    <View style={styles.buttonContainerCard}>
-                      <Text style={styles.buttonCard}>Seleccionar</Text>
-                    </View>
-                  </TouchableHighlight>
-                </View>
-				      </View>
+              <ScrollView>				
+					{	
+						
+						list.map((item,index)=> {
+							return(
+								<View key={index} >
+									<CardPacientesModal
+										navigation={navigation}
+										nombre={item.nombres}
+										apellido={item.apellidos}
+										tipoSangre={item.tipoSangreId}
+										tipoRH={item.tipoRHId}
+										id={item.id}
+									/> 
+								</View>
+							)
+						})				
+					}				
+			</ScrollView>
               <View style = {styles.buttonContainer2}>	
                 <TouchableHighlight
                   style = {styles.button2}
@@ -190,7 +216,7 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalView: {
-    margin: 20,
+    margin:110,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -203,8 +229,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-		height: 500,
-		width: 350
+		height: 600,
+		width: 370
   },
   contenedorBuscador : {
 		alignItems: 'center'
@@ -288,7 +314,7 @@ const styles = StyleSheet.create({
     //backgroundColor: "blue",
     borderRadius: 10,
 		flexDirection: 'row'	,			
-		marginTop:30,
+		marginTop:20,
   },
   txtBtnModal: {
 		color: 'white',

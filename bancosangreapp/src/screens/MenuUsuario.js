@@ -66,7 +66,7 @@ export const MenuUsuario = ({navigation}) => {
 						</View>	
 						<TouchableHighlight
 						 	style = {styles.contenedorinfo}
-							onPress = {() => alert('Control de donaciones')}
+							onPress = {() => navigation.navigate('Control de bolsas')}
 						>
 							<Text style = {styles.tituloOpciones}>Control de donaciones</Text>
 						</TouchableHighlight>						

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView ,Modal} from 'react-native';
+import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView ,Modal, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,12 +11,12 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { CardPacientesModal } from '../components/CardPacientesModal';
 
-export const Donacion = (navigation) => {
+export const Donacion = (navigation,id) => {
   const[fechaDonacion, setDonacion] = useState('');
   const[tipoBolsaId, setTipoBolsa] = useState('');
   const[cantidadMl, setCantidadMl] = useState('');
   const[donanteId, setDonanteId] = useState('');
-  const[receptorId, setReceptorId] = useState('');
+  const[receptorId, setReceptorId] = useState('');  
   //const[fechaAplicacion, setAplicacion] = useState('');
 
   //para modal pacientes
@@ -35,6 +35,41 @@ export const Donacion = (navigation) => {
 	useEffect(() => {
 		getList();
 	})
+
+  const agregarDonacion = () => {
+    const url = customConfig.apiURL + "Bolsas/?";
+    var responseJ;
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        tipoBolsaId: tipoBolsaId,
+        cantidadml: cantidadMl,
+        donanteId:donanteId,  
+        fechaDonacion: fechaDonacion,
+
+      }),
+      headers:{
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    })
+    .then(async function (response) {
+      if(response.status == 200 || response.status == 201){
+        Alert.alert('Éxito', 'Bolsa agregada correctamente');
+          responseJ = await response.json;          
+      }
+      else if(response.status == 500){
+        Alert.alert('Error', 'Intente de nuevo');
+      }
+      else{
+        Alert.alert('Error', 'Intente más tarde');
+      }
+      return Promise.reject(JSON.stringify(response));
+    }).then(function (data){
+      console.log(data);
+    }).catch(function (error){
+      console.log(error);
+    });
+  }
 
   const[modalVisible , setModalVisible] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -61,7 +96,7 @@ export const Donacion = (navigation) => {
           <View>
           <TouchableHighlight onPress={showDatePicker}>
             <View style={styles.buttonContainer2}>
-              <Text style={styles.button2}>Seleccionar fecha de nacimiento</Text>
+              <Text style={styles.button2}>Seleccionar fecha de denación</Text>
             </View>
           </TouchableHighlight>
           <DateTimePickerModal
@@ -97,7 +132,7 @@ export const Donacion = (navigation) => {
             style={styles.cardText}
           />
           <Text style={styles.cardTitle}>Donante:</Text>
-          <Text style={styles.cardTitle2}>Antonio Merino</Text>
+          <Text style={styles.cardTitle2}></Text>
           <TouchableHighlight
             onPress={() => setModalVisible(true)}
           >
@@ -107,7 +142,7 @@ export const Donacion = (navigation) => {
           </TouchableHighlight>
   
           <TouchableHighlight
-            onPress={() => alert("Registro de bolsa realizado ")}
+            onPress={() => agregarDonacion()}
           >
             <View style={styles.buttonContainer}>
               <Text style={styles.button}>Agregar bolsa</Text>
@@ -140,7 +175,8 @@ export const Donacion = (navigation) => {
 										apellido={item.apellidos}
 										tipoSangre={item.tipoSangreId}
 										tipoRH={item.tipoRHId}
-										id={item.id}
+                    id={item.id}
+                    setDonanteId = {setDonanteId}
 									/> 
 								</View>
 							)

@@ -6,8 +6,9 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
 import axios from 'axios';
 import customConfig from '../../custom-config.json';
+import { Donacion } from '../screens/Donacion';
 
-export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tipoRH,id}) => {
+export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tipoRH,id, setDonanteId}) => {
 	const[modalVisible , setModalVisible] = useState(false);
 	const[nombreTS, setNombreTS] = useState('');
 	const[nombreRH, setNombreRH] = useState('');
@@ -15,6 +16,7 @@ export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tip
 	const[apellidoPaciente,setApellidoPaciente] = useState('');
 	const[tipoSangreUp,setTipoSangreUp] = useState('');
 	const[tipoRHUp,setTipoRHUp] = useState('');
+    const[idPaciente,setId] = useState('');
 
 	var responseJ;
 		axios({
@@ -39,6 +41,7 @@ export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tip
 			setApellidoPaciente(apellido);	
 			setTipoSangreUp(tipoSangre);
 			setTipoRHUp(tipoRH);
+			setId(id)
 		},[])
 		
 
@@ -47,7 +50,7 @@ export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tip
 			<ScrollView>
 				<View style = {styles.cartaPaciente}>
 					<TouchableHighlight 
-						//onPress={() => setModalVisible(true)}
+						onPress={() => setDonanteId(id)}
 					>
 						<View style = {styles.contenedorContenido}>
 							<Text style = {styles.informacion}>Paciente: {nombre} {apellido}</Text>

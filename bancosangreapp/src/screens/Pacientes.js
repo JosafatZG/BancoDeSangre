@@ -105,7 +105,10 @@ export const Pacientes = ({ navigation }) => {
             cancelTextIOS="Cancelar"
             confirmTextIOS="Confirmar"   
             style = {styles.inputIOSDate}    
-            isDarkModeEnabled= 'true'     
+            isDarkModeEnabled= 'true'  
+            date={fechaNacimiento ? new Date(fechaNacimiento) : undefined}
+            minimumDate={new Date('2004-01-01')}
+            maximumDate={new Date('1957-01-01')}    
           />
           <Text style={styles.textDate}>{fechaNacimiento}</Text>
           </View>

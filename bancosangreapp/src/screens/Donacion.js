@@ -64,8 +64,10 @@ export const Donacion = ({navigation}) => {
       body: JSON.stringify({
         tipoBolsaId: tipoBolsaId,
         cantidadml: cantidadMl,
-        donanteId: donanteId,          
-        fechaDonacion: fechaDonacion,       
+        donanteId: donanteId,  
+        receptorId:null,        
+        fechaDonacion: fechaDonacion, 
+        fechaAplicacion:null,   
       }),
       headers:{
         'Content-type': 'application/json; charset=UTF-8'
@@ -111,7 +113,10 @@ export const Donacion = ({navigation}) => {
             cancelTextIOS="Cancelar"
             confirmTextIOS="Confirmar"   
             style = {styles.inputIOSDate}    
-            isDarkModeEnabled= 'true'     
+            isDarkModeEnabled= 'true'   
+            date={fechaDonacion ? new Date(fechaDonacion) : undefined}
+            minimumDate={new Date('2022-01-01')}
+            maximumDate={new Date()}  
           />
           <Text style={styles.textDate}>{fechaDonacion}</Text>
           </View>

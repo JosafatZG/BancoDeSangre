@@ -6,7 +6,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
 import axios from 'axios';
 import customConfig from '../../custom-config.json';
-import { Donacion } from '../screens/Donacion';
+//import { Donacion } from '../screens/Donacion';
 
 export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tipoRH,id, setDonanteId, setModalVisible, modalVisible}) => {
 	//const[modalVisible , setModalVisible] = useState(false);

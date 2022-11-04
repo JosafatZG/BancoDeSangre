@@ -12,11 +12,14 @@ import axios from 'axios';
 import { CardPacientesModal } from '../components/CardPacientesModal';
 
 export const Donacion = (navigation,id) => {
-  const[fechaDonacion, setDonacion] = useState('');
-  const[tipoBolsaId, setTipoBolsa] = useState('');
-  const[cantidadMl, setCantidadMl] = useState('');
-  const[donanteId, setDonanteId] = useState('');
-  const[receptorId, setReceptorId] = useState('');  
+  const[fechaDonacion, setFechaDonacion] = useState('');
+  const[fechaAplicacion, setAplicacion] = useState('');
+  const[tipoBolsaId, setTipoBolsa] = useState();
+  const[cantidadMl, setCantidadMl] = useState();
+  const[donanteId, setDonanteId] = useState();
+  const[receptorId, setReceptorId] = useState();  
+  const[modalVisible , setModalVisible] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   //const[fechaAplicacion, setAplicacion] = useState('');
 
   //para modal pacientes
@@ -31,22 +34,38 @@ export const Donacion = (navigation,id) => {
 			responseJ = await response.json			
 			setList(response.data)			
 		})
+    
 	}
 	useEffect(() => {
 		getList();
 	})
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+    };
+  
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+    };
+
+    const confirmarFecha = date => {
+      const opciones = { year: 'numeric', month: '2-digit', day: "2-digit" };
+      setFechaDonacion(date.toLocaleDateString('fr-CA', opciones));
+      //setFechaNacimiento('2022-10-25T02:55:45.490Z');
+      hideDatePicker();
+      };
+
   const agregarDonacion = () => {
-    const url = customConfig.apiURL + "Bolsas/?";
+   
+    const urlAgregar = customConfig.apiURL + "Bolsas/?";
     var responseJ;
-    fetch(url, {
+    fetch(urlAgregar, {
       method: 'POST',
       body: JSON.stringify({
         tipoBolsaId: tipoBolsaId,
         cantidadml: cantidadMl,
-        donanteId:donanteId,  
-        fechaDonacion: fechaDonacion,
-
+        donanteId: donanteId,          
+        fechaDonacion: fechaDonacion,       
       }),
       headers:{
         'Content-type': 'application/json; charset=UTF-8'
@@ -62,6 +81,7 @@ export const Donacion = (navigation,id) => {
       }
       else{
         Alert.alert('Error', 'Intente más tarde');
+        alert(response.status)
       }
       return Promise.reject(JSON.stringify(response));
     }).then(function (data){
@@ -71,24 +91,6 @@ export const Donacion = (navigation,id) => {
     });
   }
 
-  const[modalVisible , setModalVisible] = useState(false);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-    };
-  
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-    };
-
-    const confirmarFecha = date => {
-      const opciones = { year: 'numeric', month: '2-digit', day: "2-digit" };
-      setDonacion(date.toLocaleDateString('fr-CA', opciones));
-      //setFechaNacimiento('2022-10-25T02:55:45.490Z');
-      hideDatePicker();
-      };
-
   return (
     <>
         <View style={styles.card}>
@@ -96,7 +98,7 @@ export const Donacion = (navigation,id) => {
           <View>
           <TouchableHighlight onPress={showDatePicker}>
             <View style={styles.buttonContainer2}>
-              <Text style={styles.button2}>Seleccionar fecha de denación</Text>
+              <Text style={styles.button2}>Seleccionar fecha de donación</Text>
             </View>
           </TouchableHighlight>
           <DateTimePickerModal
@@ -122,14 +124,15 @@ export const Donacion = (navigation,id) => {
               { label: "Plasma", value: 2 },
               { label:"Sangre", value: 1}
             ]}
-            onValueChange = {(value=>setTipoBolsa(value))}
+            onValueChange = {(value)=>setTipoBolsa(value)}
           />
-          <Text style={styles.cardTitle}>Cantidad:</Text>
+          <Text style={styles.cardTitle}>Cantidad ml:</Text>
           <TextInput
             keyboardType="numeric"
-            placeholder="Ejemplo: 2"
+            placeholder="Ejemplo: 200 ml"
             placeholderTextColor={"white"}
-            style={styles.cardText}
+            style={styles.cardText}  
+            onChangeText ={(value)=>setCantidadMl(value)}          
           />
           <Text style={styles.cardTitle}>Donante:</Text>
           <Text style={styles.cardTitle2}></Text>
@@ -177,6 +180,8 @@ export const Donacion = (navigation,id) => {
 										tipoRH={item.tipoRHId}
                     id={item.id}
                     setDonanteId = {setDonanteId}
+                    setModalVisible = {setModalVisible}
+                    modalVisible = {modalVisible}
 									/> 
 								</View>
 							)

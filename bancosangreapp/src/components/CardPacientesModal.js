@@ -8,8 +8,8 @@ import axios from 'axios';
 import customConfig from '../../custom-config.json';
 import { Donacion } from '../screens/Donacion';
 
-export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tipoRH,id, setDonanteId}) => {
-	const[modalVisible , setModalVisible] = useState(false);
+export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tipoRH,id, setDonanteId, setModalVisible, modalVisible}) => {
+	//const[modalVisible , setModalVisible] = useState(false);
 	const[nombreTS, setNombreTS] = useState('');
 	const[nombreRH, setNombreRH] = useState('');
 	const[nombrePaciente,setNombrePaciente] = useState('');
@@ -44,13 +44,17 @@ export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tip
 			setId(id)
 		},[])
 		
+		const asignarIdDonante = (id) => {
+			setDonanteId(id)
+			setModalVisible(!modalVisible)
+		}
 
   return (
     <>
 			<ScrollView>
 				<View style = {styles.cartaPaciente}>
 					<TouchableHighlight 
-						onPress={() => setDonanteId(id)}
+						onPress={() => asignarIdDonante(id)}
 					>
 						<View style = {styles.contenedorContenido}>
 							<Text style = {styles.informacion}>Paciente: {nombre} {apellido}</Text>

@@ -62,12 +62,13 @@ export const Donacion = ({navigation}) => {
     fetch(urlAgregar, {
       method: 'POST',
       body: JSON.stringify({
+        
         tipoBolsaId: tipoBolsaId,
         cantidadml: cantidadMl,
         donanteId: donanteId,  
-        receptorId:null,        
+        receptorId: null,        
         fechaDonacion: fechaDonacion, 
-        fechaAplicacion:null,   
+        fechaAplicacion: null,   
       }),
       headers:{
         'Content-type': 'application/json; charset=UTF-8'
@@ -401,7 +402,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: 350,
     marginTop: 15,
-    borderWidth: 2,
+    //borderWidth: 2,
     padding: 10,
     fontSize: 15,
     borderRadius: 10,

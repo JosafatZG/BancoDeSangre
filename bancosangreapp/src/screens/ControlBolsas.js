@@ -6,8 +6,32 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
 import axios from 'axios';
 import customConfig from '../../custom-config.json';
+import { CardBolsas } from '../components/CardBolsa';
 
 export const ControlBolsas = ({navigation}) => {
+	const[modalVisible , setModalVisible] = useState(false);
+
+	const[nombresD, setnombresD] = useState('');
+	const[fechaDonacion, setFechaD] = useState('')
+	const[cantidadMl, setCantidadMl] = useState('');
+
+	const[lista,setLista] = useState([]);
+	const[listaP,setListap] = useState([]);
+
+	const getLista = () => {
+		var responseJ;
+		axios({
+			url: customConfig.apiURL + "Bolsas/?",
+			method: 'GET'
+		}).then(async (response) => {
+			responseJ = await response.json
+			setLista(response.data)
+		})
+	}
+	useEffect(()=>{
+		getLista();
+	})
+
     return(
     <>
         <View style= {styles.contenedorBuscador}>
@@ -18,18 +42,21 @@ export const ControlBolsas = ({navigation}) => {
             />
         </View>
         <ScrollView>
-            <View style = {styles.cartaPaciente}>
-					<TouchableHighlight 
-						onPress={() => setModalVisible(true)}
-					>
-						<View style = {styles.contenedorContenido}>
-							<Text style = {styles.informacion}>Donante: Manuel Araniva </Text>
-							<Text style = {styles.informacion2}>Tipo de sangre: B</Text>
-							<Text style = {styles.informacion}>Tipo de RH: Positivo</Text>
-                            <Text style = {styles.informacion}>Cantidad ml: 500</Text>
+			{
+				lista.map((item,index)=>{
+					return(
+						<View key={index}>
+							<CardBolsas
+							navigation={navigation}
+							donante ={item.donanteId}
+							cantidad= {item.cantidadml}
+							fechaD={item.fechaDonacion}
+							id={item.id}
+							/>
 						</View>
-					</TouchableHighlight>
-				</View>
+					)
+				})
+			}
         </ScrollView>
     </>
     );

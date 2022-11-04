@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { CardPacientesModal } from '../components/CardPacientesModal';
 
-export const Donacion = (navigation,id) => {
+export const Donacion = ({navigation}) => {
   const[fechaDonacion, setFechaDonacion] = useState('');
   const[fechaAplicacion, setAplicacion] = useState('');
   const[tipoBolsaId, setTipoBolsa] = useState();

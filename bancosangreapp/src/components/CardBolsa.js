@@ -82,12 +82,12 @@ export const CardBolsas = ({navigation, donante, tipoSangre, tipoRH,id, cantidad
                             <View style = {styles.contenedorInfo}>
                                 <Text style = {styles.informacionModal}>Nombre:</Text>
                                 <TextInput             
-									style = {styles.cajaTextoModal}							
-									placeholder = {nombreDonante}
-									placeholderTextColor= '#C43B58'		
-									value = {nombreDonante}
-									onChangeText={(e) => setNombreDonante(e)}									
-								/>
+																		style = {styles.cajaTextoModal}							
+																		placeholder = {nombreDonante}
+																		placeholderTextColor= '#C43B58'		
+																		value = {nombreDonante}
+																		onChangeText={(e) => setNombreDonante(e)}									
+																	/>
                                 <Text style = {styles.informacionModal}>Apellido:</Text>
 								<TextInput             
 									style = {styles.cajaTextoModal}							

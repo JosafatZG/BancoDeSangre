@@ -56,42 +56,43 @@ export const Donacion = ({navigation}) => {
       };
 
   const agregarDonacion = () => {
-   
-    const urlAgregar = customConfig.apiURL + "Bolsas/?";
-    var responseJ;
-    fetch(urlAgregar, {
-      method: 'POST',
-      body: JSON.stringify({
-        
-        tipoBolsaId: tipoBolsaId,
-        cantidadml: cantidadMl,
-        donanteId: donanteId,  
-        receptorId: null,        
-        fechaDonacion: fechaDonacion, 
-        fechaAplicacion: null,   
-      }),
-      headers:{
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    })
-    .then(async function (response) {
-      if(response.status == 200 || response.status == 201){
-        Alert.alert('Éxito', 'Bolsa agregada correctamente');
-          responseJ = await response.json;          
-      }
-      else if(response.status == 500){
-        Alert.alert('Error', 'Intente de nuevo');
-      }
-      else{
-        Alert.alert('Error', 'Intente más tarde');
-        alert(response.status)
-      }
-      return Promise.reject(JSON.stringify(response));
-    }).then(function (data){
-      console.log(data);
-    }).catch(function (error){
-      console.log(error);
-    });
+    
+      const urlAgregar = customConfig.apiURL + "Bolsas/?";           
+        var responseJ;
+        fetch(urlAgregar, {
+          method: 'POST',
+          body: JSON.stringify({
+            id: null,
+            tipoBolsaId: tipoBolsaId,
+            cantidadml: cantidadMl,
+            donanteId: donanteId,  
+            receptorId: null,        
+            fechaDonacion: fechaDonacion, 
+            fechaAplicacion: null,   
+          }),
+          headers:{
+            'Content-type': 'application/json; charset=UTF-8'
+          }
+        })
+        .then(async function (response) {
+          if(response.status == 200 || response.status == 201){
+            Alert.alert('Éxito', 'Bolsa agregada correctamente');
+              responseJ = await response.json;          
+          }
+          else if(response.status == 500){
+            Alert.alert('Error', 'Intente de nuevo');
+          }
+          else{
+            Alert.alert('Error', 'Intente más tarde');
+            alert(response.status)
+          }
+          return Promise.reject(JSON.stringify(response));
+        }).then(function (data){
+          console.log(data);
+        }).catch(function (error){
+          console.log(error);
+        });
+      
   }
 
   return (

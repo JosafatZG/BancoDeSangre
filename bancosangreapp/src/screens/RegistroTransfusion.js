@@ -6,6 +6,7 @@ import customConfig from '../../custom-config.json'
 import axios from "axios";
 import { useEffect } from "react";
 import { CardPacientesModal } from "../components/CardPacientesModal";
+import { CardDonanteReceptor } from "../components/CardDonanteReceptor";
 
 export const RegistroTransfusiones = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -52,6 +53,7 @@ export const RegistroTransfusiones = ({navigation}) => {
               <ScrollView>
                 <View style = {styles.contenedorDonates}>
                   {/*Contenido */}
+                  <CardDonanteReceptor />
                 </View>
               </ScrollView>
               <TouchableHighlight                

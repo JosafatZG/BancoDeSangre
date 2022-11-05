@@ -35,11 +35,11 @@ export const ControlBolsas = ({navigation}) => {
     return(
     <>
         <View style= {styles.contenedorBuscador}>
-            <TextInput             
-                style = {styles.cajaTexto}							
-                placeholder='Ingrese paciente para buscar bolsa/s'
-                placeholderTextColor= '#C43B58'										
-            />
+          <TextInput             
+            style = {styles.cajaTexto}							
+            placeholder='Ingrese paciente para buscar bolsa/s'
+            placeholderTextColor= '#C43B58'										
+          />
         </View>
         <ScrollView>
 			{
@@ -52,6 +52,7 @@ export const ControlBolsas = ({navigation}) => {
 							cantidad= {item.cantidadml}
 							fechaD={item.fechaDonacion}
 							id={item.id}
+							tipoBolsa = {item.tipoBolsaId}
 							/>
 						</View>
 					)

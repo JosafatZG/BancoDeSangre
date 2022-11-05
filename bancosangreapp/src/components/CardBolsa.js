@@ -22,18 +22,25 @@ import customConfig from "../../custom-config.json";
 export const CardBolsas = ({
   navigation,
   donante,
-  tipoSangre,
-  tipoRH,
-  id,
   cantidad,
   fechaD,
+  tipoSangre,
+  tipoRH,
+  id, 
+  tipoBolsa
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [nombreD, setNombreD] = useState("");
   const [apellidoD, setApellidoD] = useState("");
+  const [tipoRHID, setTipoRHID] =  useState("");
+  const [tipoSangreID, setTipoSangreID] =  useState("");
+  const [nombreTipoBolsa, setNombreTipoBolsa] = useState("");
+  const [nombreTipoSangre, setNombreTipoSangre] = useState("");
+  const [nombreTipoRH, setNombreTipoRH] = useState("");
 
   var responseJ, responseJ2, responseJ3;  
 
+  //Obtener datos de un donante en específico 
   axios({
     url: customConfig.apiURL + "Pacientes/" + donante,
     method: "GET",
@@ -41,8 +48,35 @@ export const CardBolsas = ({
     responseJ = await response.json;
     setNombreD(response.data["nombres"]);
     setApellidoD(response.data["apellidos"]);
+    setTipoSangreID(response.data["tipoSangreId"]);
+    setTipoRHID(response.data["tipoRHId"]);
   });
- 
+
+  //Obtener el nombre del tipo de bolsa por id
+  axios({
+    url: customConfig.apiURL + "TipoBolsas/" + tipoBolsa,
+    method: "GET",
+  }).then(async (response) => {
+    responseJ = await response.json;
+    setNombreTipoBolsa(response.data["tipo"]);
+  });
+  
+  //Obtener el nombre del tipo de sangre por id
+  axios({
+    url: customConfig.apiURL + "TipoSangre/" + tipoSangreID,
+    method: "GET",
+  }).then(async (response) => {
+    responseJ = await response.json;
+    setNombreTipoSangre(response.data["nombreTS"]);
+  });
+
+  axios({
+    url: customConfig.apiURL + "TipoRH/" + tipoRHID,
+    method: "GET",
+  }).then(async (response) => {
+    responseJ = await response.json;
+    setNombreTipoRH(response.data["nombreRH"]);
+  });
 
   return (
     <>
@@ -57,9 +91,9 @@ export const CardBolsas = ({
               <Text style={styles.informacion}>
                 Fecha de donación: {fechaD}
               </Text>
-              <Text style={styles.informacion}>Tipo de bolsa:</Text>
-              <Text style={styles.informacion}>Tipo de sangre:</Text>
-              <Text style={styles.informacion}>Tipo de RH:</Text>
+              <Text style={styles.informacion}>Tipo de bolsa: {nombreTipoBolsa}</Text>
+              <Text style={styles.informacion}>Tipo de sangre: {nombreTipoSangre}</Text>
+              <Text style={styles.informacion}>Tipo de RH: {nombreTipoRH}</Text>
             </View>
           </TouchableHighlight>
         </View>

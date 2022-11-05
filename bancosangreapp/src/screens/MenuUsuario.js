@@ -98,7 +98,7 @@ export const MenuUsuario = ({navigation}) => {
 						</View>	
 						<TouchableHighlight
 						 	style = {styles.contenedorinfo}
-							 onPress = {() => alert('Registro de transfusiones')}
+							 onPress = {() => navigation.navigate('Registro de transfusiones')}
 						>
 							<Text style = {styles.tituloOpciones}>Registro de transfusiones</Text>
 						</TouchableHighlight>						

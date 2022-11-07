@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 	},
 	cartaUsuario: {
 		backgroundColor: '#C43B58',
-		height: 220,
+		height: 250,
 		margin: 20,
 		borderRadius: 10,
 		shadowRadius: 2,

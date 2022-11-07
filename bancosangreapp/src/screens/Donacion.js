@@ -1,47 +1,148 @@
 import React from 'react'
-import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView ,Modal} from 'react-native';
+import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView ,Modal, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
 import  { useState } from 'react'
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import customConfig from '../../custom-config.json';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useEffect } from 'react';
+import axios from 'axios';
+import { CardPacientesModal } from '../components/CardPacientesModal';
 
-export const Donacion = () => {
+export const Donacion = ({navigation}) => {
+  const[fechaDonacion, setFechaDonacion] = useState('');
+  const[fechaAplicacion, setAplicacion] = useState('');
+  const[tipoBolsaId, setTipoBolsa] = useState();
+  const[cantidadMl, setCantidadMl] = useState();
+  const[donanteId, setDonanteId] = useState();
+  const[receptorId, setReceptorId] = useState();  
   const[modalVisible , setModalVisible] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  //const[fechaAplicacion, setAplicacion] = useState('');
+
+  //para modal pacientes
+  const[list, setList] = useState([]);
+
+  const getList = () => {
+		var responseJ;
+		axios({
+			url: customConfig.apiURL + "Pacientes/?",
+			method: 'GET'
+		}).then(async (response) => {
+			responseJ = await response.json			
+			setList(response.data)			
+		})
+    
+	}
+	useEffect(() => {
+		getList();
+	})
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+    };
+  
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+    };
+
+    const confirmarFecha = date => {
+      const opciones = { year: 'numeric', month: '2-digit', day: "2-digit" };
+      setFechaDonacion(date.toLocaleDateString('fr-CA', opciones));
+      //setFechaNacimiento('2022-10-25T02:55:45.490Z');
+      hideDatePicker();
+      };
+
+  const agregarDonacion = () => {
+    
+      const urlAgregar = customConfig.apiURL + "Bolsas/?";           
+        var responseJ;
+        fetch(urlAgregar, {
+          method: 'POST',
+          body: JSON.stringify({
+            id: null,
+            tipoBolsaId: tipoBolsaId,
+            cantidadml: cantidadMl,
+            donanteId: donanteId,  
+            receptorId: null,        
+            fechaDonacion: fechaDonacion, 
+            fechaAplicacion: null,   
+          }),
+          headers:{
+            'Content-type': 'application/json; charset=UTF-8'
+          }
+        })
+        .then(async function (response) {
+          if(response.status == 200 || response.status == 201){
+            Alert.alert('Éxito', 'Bolsa agregada correctamente');
+              responseJ = await response.json;          
+          }
+          else if(response.status == 500){
+            Alert.alert('Error', 'Intente de nuevo');
+          }
+          else{
+            Alert.alert('Error', 'Intente más tarde');
+            alert(response.status)
+          }
+          return Promise.reject(JSON.stringify(response));
+        }).then(function (data){
+          console.log(data);
+        }).catch(function (error){
+          console.log(error);
+        });
+      
+  }
 
   return (
     <>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Fecha de donación:</Text>
-          <RNDateTimePicker mode='date' style={styles.datePickerStyle}
-            format="DD-MM-YYYY"
-            value={new Date()}
-            display="calendar"
-            themeVariant="dark"
-            accentColor='lightblue'
+          <View>
+          <TouchableHighlight onPress={showDatePicker}>
+            <View style={styles.buttonContainer2}>
+              <Text style={styles.button2}>Seleccionar fecha de donación</Text>
+            </View>
+          </TouchableHighlight>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={confirmarFecha}
+            onCancel={hideDatePicker}
+            locale='es-ES'
+            headerTextIOS="Elige la fecha"
+            cancelTextIOS="Cancelar"
+            confirmTextIOS="Confirmar"   
+            style = {styles.inputIOSDate}    
+            isDarkModeEnabled= 'true'   
+            date={fechaDonacion ? new Date(fechaDonacion) : undefined}
+            minimumDate={new Date('2022-01-01')}
+            maximumDate={new Date()}  
           />
+          <Text style={styles.textDate}>{fechaDonacion}</Text>
+          </View>
           <Text style={styles.cardTitle}>Tipo de bolsa:</Text>
-          {/**CUANDO YA VAYAN A PROGRAMAR quitenle el comenario */}
-          {/**onValueChange={(value)=>setGenre(value)} ADENTRO DEL RNPICKER*/}
           <RNPickerSelect
             style={pickerSelectStyles}
             placeholder={{ label: "Seleccione el tipo de bolsa", value: null }}
             items={[
-              { label: "Plaquetas", value: "Plaquetas" },
-              { label: "Plasma", value: "Plasma" },
-              { label:"Sangre", value:"Sangre"}
+              { label: "Plaquetas", value: 3 },
+              { label: "Plasma", value: 2 },
+              { label:"Sangre", value: 1}
             ]}
+            onValueChange = {(value)=>setTipoBolsa(value)}
           />
-          <Text style={styles.cardTitle}>Cantidad:</Text>
+          <Text style={styles.cardTitle}>Cantidad ml:</Text>
           <TextInput
             keyboardType="numeric"
-            placeholder="Ejemplo: 2"
+            placeholder="Ejemplo: 200 ml"
             placeholderTextColor={"white"}
-            style={styles.cardText}
+            style={styles.cardText}  
+            onChangeText ={(value)=>setCantidadMl(value)}          
           />
           <Text style={styles.cardTitle}>Donante:</Text>
-          <Text style={styles.cardTitle2}>Antonio Merino</Text>
+          <Text style={styles.cardTitle2}></Text>
           <TouchableHighlight
             onPress={() => setModalVisible(true)}
           >
@@ -51,10 +152,10 @@ export const Donacion = () => {
           </TouchableHighlight>
   
           <TouchableHighlight
-            onPress={() => alert("Registro de bolsa realizado ")}
+            onPress={() => agregarDonacion()}
           >
             <View style={styles.buttonContainer}>
-              <Text style={styles.button}>Agregar paciente</Text>
+              <Text style={styles.button}>Agregar bolsa</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -68,24 +169,32 @@ export const Donacion = () => {
               <View style= {styles.contenedorBuscador}>
                 <TextInput             
                 style = {styles.cajaTexto}							
-                placeholder='Ingrese usuario para buscar'
+                placeholder='Ingrese donante para buscar'
                 placeholderTextColor= '#C43B58'										
                 />
               </View>
-              <View style = {styles.cartaPaciente}>
-                <View style = {styles.contenedorContenido}>
-                  <Text style = {styles.informacion}>Paciente: Antonio Merino</Text>
-                  <Text style = {styles.informacion2}>Tipo de sangre: A</Text>
-                  <Text style = {styles.informacion}>Tipo de RH: Negativo</Text>
-                  <TouchableHighlight
-                     onPress={() => alert("Paciente seleccionado")}
-                  >
-                    <View style={styles.buttonContainerCard}>
-                      <Text style={styles.buttonCard}>Seleccionar</Text>
-                    </View>
-                  </TouchableHighlight>
-                </View>
-				      </View>
+              <ScrollView>				
+					{	
+						
+						list.map((item,index)=> {
+							return(
+								<View key={index} >
+									<CardPacientesModal
+										navigation={navigation}
+										nombre={item.nombres}
+										apellido={item.apellidos}
+										tipoSangre={item.tipoSangreId}
+										tipoRH={item.tipoRHId}
+                    id={item.id}
+                    setDonanteId = {setDonanteId}
+                    setModalVisible = {setModalVisible}
+                    modalVisible = {modalVisible}
+									/> 
+								</View>
+							)
+						})				
+					}				
+			</ScrollView>
               <View style = {styles.buttonContainer2}>	
                 <TouchableHighlight
                   style = {styles.button2}
@@ -155,7 +264,7 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalView: {
-    margin: 20,
+    margin:110,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -168,8 +277,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-		height: 500,
-		width: 350
+		height: 600,
+		width: 370
   },
   contenedorBuscador : {
 		alignItems: 'center'
@@ -253,7 +362,7 @@ const styles = StyleSheet.create({
     //backgroundColor: "blue",
     borderRadius: 10,
 		flexDirection: 'row'	,			
-		marginTop:30,
+		marginTop:20,
   },
   txtBtnModal: {
 		color: 'white',
@@ -290,6 +399,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight:'bold'
   },
+  inputIOSDate: {
+    height: 150,
+    width: 350,
+    marginTop: 15,
+    //borderWidth: 2,
+    padding: 10,
+    fontSize: 15,
+    borderRadius: 10,
+    marginLeft: 15,
+    color: "black",
+  },
+  textDate:{
+    color: 'white',
+    fontWeight:'bold',
+    fontSize:17,
+    marginTop:5
+  }
 })
 
 const pickerSelectStyles = StyleSheet.create({

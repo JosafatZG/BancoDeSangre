@@ -55,4 +55,10 @@ Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 In
 
 >Manual de Usuario--> https://drive.google.com/file/d/1D2DlMAXQ9l21xvD7JHTKQOlwzpMPQzZo/view?usp=drivesdk
 
+>Mockups --> https://drive.google.com/drive/folders/1Knik_IcuUlrIlE6LWLARQcbyCTMe64_q?usp=sharing
 
+>Enlace video--> https://youtu.be/2RcTvOexjSE
+
+>Enlace repositorio API--> https://github.com/JosafatZG/BancoDeSangreAPI.git
+
+>API Alojada(swagger page)--> http://artuzamora-001-site1.gtempurl.com/swagger/index.html

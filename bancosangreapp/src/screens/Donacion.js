@@ -120,7 +120,7 @@ export const Donacion = ({navigation}) => {
             minimumDate={new Date('2022-01-01')}
             maximumDate={new Date()}  
           />
-          <Text style={styles.textDate}>{fechaDonacion}</Text>
+          <Text style={styles.textDate}>Fecha seleccionada: {fechaDonacion}</Text>
           </View>
           <Text style={styles.cardTitle}>Tipo de bolsa:</Text>
           <RNPickerSelect

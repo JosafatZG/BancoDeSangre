@@ -110,7 +110,7 @@ export const Pacientes = ({ navigation }) => {
             minimumDate={new Date('2004-01-01')}
             maximumDate={new Date('1957-01-01')}    
           />
-          <Text style={styles.textDate}>{fechaNacimiento}</Text>
+          <Text style={styles.textDate}>Fecha seleccionada: {fechaNacimiento}</Text>
           </View>
 
           <Text style={styles.cardTitle}>Género</Text>

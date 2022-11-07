@@ -7,10 +7,67 @@ import axios from "axios";
 import { useEffect } from "react";
 import { CardPacientesModal } from "../components/CardPacientesModal";
 import { CardDonanteReceptor } from "../components/CardDonanteReceptor";
+import { CardPacientes } from "../components/CardPacientes";
+//import { CardPacientesModal } from "../components/CardPacientesModal";
 
 export const RegistroTransfusiones = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisibleReceptor, setModalVisibleReceptor] = useState(false);
+    const [pacientes, setPacientes] = useState([]);
+    const [donantesId, setDonanteId] = useState("");
+    const [receptorId, setReceptorId] = useState("");
+    const [nombreDonante, setNombreDonante] = useState("");
+    const [apellidoDonante, setApellidoDonante] = useState("");
+    const [nombreReceptor, setNombreReceptor] = useState("");
+    const [apellidoReceptor, setApellidoReceptor] = useState("");
+
+    const getPacientes = () => {
+      var responseJ;
+      axios({
+        url: customConfig.apiURL + "Pacientes/",
+        method: 'GET'
+      }).then(async (response) => {
+        responseJ = await response.json			
+        setPacientes(response.data)			
+      })    
+    }
+
+    useEffect(() => {
+      if(donantesId == ''){
+        setNombreDonante('--');
+      }else{
+        var responseJ;
+        axios({
+          url: customConfig.apiURL + "Pacientes/" + donantesId,
+          method: 'GET'
+        }).then(async (response) => {
+          responseJ = await response.json			
+          setNombreDonante(response.data["nombres"]);
+          setApellidoDonante(response.data["apellidos"]);			
+        })  
+      }
+    },[donantesId])
+      
+    useEffect(() => {
+      if(receptorId == ''){
+        setNombreReceptor('--');
+      }else{
+        var responseJ;
+        axios({
+          url: customConfig.apiURL + "Pacientes/" + receptorId,
+          method: 'GET'
+        }).then(async (response) => {
+          responseJ = await response.json			
+          setNombreReceptor(response.data["nombres"]);
+          setApellidoReceptor(response.data["apellidos"]);			
+        })  
+      }
+    },[receptorId])
+
+    useEffect(() =>{
+      getPacientes();
+    })
+
     return(
       <>                  
         <View style= {styles.card}>
@@ -35,6 +92,23 @@ export const RegistroTransfusiones = ({navigation}) => {
                 </View>
               </TouchableHighlight>
             </View>
+            <View>
+              <Text style = {styles.leyenda}>Donante seleccionado:</Text>
+              <Text style = {styles.leyenda}>{nombreDonante} {apellidoDonante}</Text>
+            </View>
+            <View>
+            <View>
+              <Text style = {styles.leyenda}>Receptor seleccionado:</Text>
+              <Text style = {styles.leyenda}>{nombreReceptor} {apellidoReceptor}</Text>
+            </View>              
+              <TouchableHighlight                
+                onPress={() => alert('Registro guardado')}
+              >
+                <View style={styles.buttonContainer}>              
+                  <Text style={styles.button}>Guardar</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
           </View>
         </View>
 
@@ -50,10 +124,26 @@ export const RegistroTransfusiones = ({navigation}) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalTitulo}>Seleccione donante</Text>
-              <ScrollView>
-                <View style = {styles.contenedorDonates}>
-                  {/*Contenido */}
-                  <CardDonanteReceptor />
+              <ScrollView horizontal = {false}>
+                <View style = {styles.contenedorDonates}>                  
+                  {
+                    pacientes.map((item, index) =>{
+                      return(
+                        <View key = {index}> 
+                          <CardPacientesModal 
+                            nombre={item.nombres}
+                            apellido={item.apellidos}
+                            tipoSangre={item.tipoSangreId}
+                            tipoRH={item.tipoRHId}
+                            id={item.id}
+                            setDonanteId = {setDonanteId}
+                            setModalVisible = {setModalVisible}
+                            modalVisible = {modalVisible}
+                          />
+                        </View>
+                      )
+                    })
+                  }                
                 </View>
               </ScrollView>
               <TouchableHighlight                
@@ -81,7 +171,24 @@ export const RegistroTransfusiones = ({navigation}) => {
               <Text style={styles.modalTitulo}>Seleccione receptor</Text>
               <ScrollView>
                 <View style = {styles.contenedorDonates}>
-                  {/*Contenido */}
+                {
+                  pacientes.map((item, index) =>{
+                    return(
+                      <View key = {index}> 
+                        <CardPacientesModal 
+                          nombre={item.nombres}
+                          apellido={item.apellidos}
+                          tipoSangre={item.tipoSangreId}
+                          tipoRH={item.tipoRHId}
+                          id={item.id}
+                          setDonanteId = {setReceptorId}
+                          setModalVisible = {setModalVisibleReceptor}
+                          modalVisible = {modalVisibleReceptor}
+                        />
+                      </View>
+                    )
+                  })
+                }                      
                 </View>
               </ScrollView>
               <TouchableHighlight                
@@ -101,7 +208,7 @@ export const RegistroTransfusiones = ({navigation}) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#C43B58",
-    height: 450,
+    height: 570,
     width: "97.5%",
     margin: 5,
     borderRadius: 14,
@@ -147,14 +254,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 2    
   },
-  centeredView: {
+  /*centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22
-  },
-  modalView: {
-    margin:110,
+  },*/
+ /* modalView: {
+    margin: 110,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -169,7 +276,7 @@ const styles = StyleSheet.create({
     elevation: 5,
 		height: 600,
 		width: 370
-  },
+  },*/
   contenedorBuscador : {
 		alignItems: 'center'
 	},
@@ -330,6 +437,8 @@ const styles = StyleSheet.create({
   },
   contenedorDonates:{    
     height: 550,
-    width: 600,
+    width: 300,
+    marginTop: 10,
+    //backgroundColor: 'blue'
   }
 })

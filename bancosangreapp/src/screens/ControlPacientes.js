@@ -66,23 +66,27 @@ export const ControlPacientes = ({ navigation }) => {
 					onChangeText={(value) => {buscarPaciente(value)}}
 				/>
 			</View>
-			<ScrollView>
-				{
-					list.map((item, index) => {
-						return (
-							<View key={index} >
-								<CardPacientes
-									navigation={navigation}
-									nombre={item.nombres}
-									apellido={item.apellidos}
-									tipoSangre={item.tipoSangreId}
-									tipoRH={item.tipoRHId}
-									id={item.id}
-								/>
-							</View>
-						)
-					})
-				}
+			<ScrollView>				
+					{	
+						
+						list.map((item,index)=> {
+							return(
+								<View key={index} >
+									<CardPacientes
+										navigation={navigation}
+										nombre={item.nombres}
+										apellido={item.apellidos}
+										tipoSangre={item.tipoSangreId}
+										tipoRH={item.tipoRHId}
+										id={item.id}
+										genero={item.generoId}
+										fechaNac={item.fechaNac}
+										edad={item.edad}									
+									/> 
+								</View>
+							)
+						})				
+					}				
 			</ScrollView>
 		</>
 	)

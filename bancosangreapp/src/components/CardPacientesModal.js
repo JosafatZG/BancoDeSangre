@@ -47,7 +47,7 @@ export const CardPacientesModal = ({navigation, nombre,apellido, tipoSangre, tip
 		const asignarIdDonante = (id) => {
 			setDonanteId(id)
 			setModalVisible(!modalVisible)
-		}
+		}		
 
   return (
     <>

@@ -84,6 +84,9 @@ export const ControlPacientes = ({navigation}) => {
 										tipoSangre={item.tipoSangreId}
 										tipoRH={item.tipoRHId}
 										id={item.id}
+										genero={item.generoId}
+										fechaNac={item.fechaNac}
+										edad={item.edad}									
 									/> 
 								</View>
 							)

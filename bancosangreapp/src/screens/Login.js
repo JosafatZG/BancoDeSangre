@@ -110,7 +110,7 @@ export const Login = ({ navigation }) => {
           await promptAsync()
           if (response?.type == "success") {
               setAccessToken(response.authentication.accessToken);
-              accessToken && fetchUserInfo();
+              accessToken && await fetchUserInfo();
               navigation.navigate('Menu usuario')
             }
         }}>

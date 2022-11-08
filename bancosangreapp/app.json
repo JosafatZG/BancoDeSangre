@@ -3,6 +3,7 @@
     "name": "bancosangreapp",
     "slug": "bancosangreapp",
     "version": "1.0.0",
+    "scheme": "com.bancosangre",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,9 +19,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bancosangre"
     },
     "android": {
+      "package": "com.bancosangre",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

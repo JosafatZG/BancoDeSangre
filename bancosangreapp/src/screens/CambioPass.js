@@ -9,10 +9,17 @@ export const CambioPass = ({ route, navigation }) => {
   const [pwd, setPwd] = useState("");
   const [repeatPwd, setRepeatPwd] = useState("");
 
+  const validatePass = (pass) => {
+    return String(pass)
+      .match(
+        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+      );
+  };
+
   const changePass = async () => {
     console.log(email);
-    if (pwd.length < 5) {
-      Alert.alert('Error', 'Debe ingresar una contraseña con 5 o más caracteres');
+    if (!validatePass(pwd)) {
+      Alert.alert('Error', 'La contraseña debe tener al menos 8 caracteres, una letra y un número.');
     }
     else if (pwd != repeatPwd) {
       Alert.alert('Error', 'Las contraseñas no coinciden');

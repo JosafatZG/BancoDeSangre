@@ -1,14 +1,42 @@
-import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as Google from 'expo-auth-session/providers/google'
 import customConfig from '../../custom-config.json';
 
 export const Login = ({ navigation }) => {
+  const [accessToken, setAccessToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: "123695429807-kmhi1s402m2ft4j7mf0vgi7okf8bod5e.apps.googleusercontent.com",
+    androidClientId: "123695429807-8qirhgcfscmplh1tc68rbk62jk4ogrij.apps.googleusercontent.com",
+    iosClientId: "123695429807-2gk0e2us5r4k1d95gmr7rh2pghmbgrib.apps.googleusercontent.com"
+  });
+
+  useEffect(() => {
+    if (response?.type == "success") {
+      setAccessToken(response.authentication.accessToken);
+      accessToken && fetchUserInfo();
+      navigation.navigate('Menu usuario')
+    }
+  }, [])
+
+  async function fetchUserInfo() {
+    let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    const userinfo = await response.json();
+    setUser(userinfo);
+  }
+
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [pwd, setPwd] = useState("");
 
   const login = async () => {
+    console.log(user);
     const url =
       customConfig.apiURL + "Usuarios/Login?" + new URLSearchParams({
         NombreUsuario: nombreUsuario,
@@ -18,14 +46,14 @@ export const Login = ({ navigation }) => {
       var responseJ;
       await fetch(url)
         .then(async function (response) {
-          if(response.status == 200){ //finded
+          if (response.status == 200) { //finded
             responseJ = await response.json();
             navigation.navigate('Menu usuario')
           }
-          else if(response.status == 500){ //connection lost
+          else if (response.status == 500) { //connection lost
             Alert.alert('Error', 'Intente de nuevo');
           }
-          else{ //error
+          else { //error
             Alert.alert('Error', 'Credenciales inválidas');
           }
         }).then(function (data) {
@@ -76,12 +104,45 @@ export const Login = ({ navigation }) => {
           onPress={() => navigation.navigate('Recuperacion')}
         />
       </View>
+      <TouchableOpacity 
+      style={styles.googleLogin}
+      onPressOut={async () => {
+          await promptAsync()
+          if (response?.type == "success") {
+              setAccessToken(response.authentication.accessToken);
+              accessToken && fetchUserInfo();
+              navigation.navigate('Menu usuario')
+            }
+        }}>
+        <Image style={styles.imgLogo} source={require("../../assets/GLogo.png")}></Image>
+        <Text style={styles.textLogo}>Iniciar sesion con google</Text>
+      </TouchableOpacity>
     </>
 
   )
 }
 
 const styles = StyleSheet.create({
+  googleLogin: {
+    flexDirection: 'row',
+    borderColor: 'gray',
+    marginLeft: 105,
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    width: 200,
+  },
+  textLogo:{
+    marginLeft: 10,
+    marginTop: 3,
+    fontWeight: 'bold',
+  },
+  imgLogo: {
+    height: 20,
+    width: 20,
+    resizeMode: 'cover',
+  },  
   imgContainer: {
     alignItems: 'center',
     justifyContent: 'center',

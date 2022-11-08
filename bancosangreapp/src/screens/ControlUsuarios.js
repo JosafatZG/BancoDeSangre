@@ -8,8 +8,7 @@ import customConfig from '../../custom-config.json';
 import { ScreenStackHeaderBackButtonImage } from 'react-native-screens';
 import axios from 'axios';
 
-
-export const ControlUsuarios = ({navigation}) => {
+export const ControlUsuarios = ({navigation}) => {	
 	const[nombreU, setNombreU] = useState('');
 	const[usuario, setUsuario] = useState('');
 	const[correo, setCorreo] = useState('');
@@ -24,12 +23,35 @@ export const ControlUsuarios = ({navigation}) => {
 		}).then(async (response) => {
 			responseJ = await response.json
 			setList(response.data)
-		})
+		}).catch(() => {});
 	}
 
 	useEffect(() => {
 		getList();
 	},[])
+
+	const buscarUsuario = async (nombre) => {
+		const url =
+			customConfig.apiURL + "Usuarios/Buscar?" + new URLSearchParams({
+				nombre: nombre,
+			});
+		try {
+			var responseJ;
+			await fetch(url)
+				.then(async function (response) {
+					if (response.status == 200) { //finded
+						responseJ = await response.json();
+						setList(responseJ);
+						//console.log(responseJ);
+					}
+				}).then(function (data) {
+					//console.log(data);
+				});
+			//console.log(responseJ);
+		} catch (error) {
+			//console.log(error);
+		}
+	}
 
   return (
     <>		
@@ -38,7 +60,8 @@ export const ControlUsuarios = ({navigation}) => {
 			<TextInput             
 				style = {styles.cajaTexto}							
 				placeholder='Ingrese usuario para buscar'
-				placeholderTextColor= '#C43B58'										
+				placeholderTextColor= '#C43B58'
+				onChangeText={(value)=> buscarUsuario(value)}
 			/>
 		</View>					
 			<ScrollView>			

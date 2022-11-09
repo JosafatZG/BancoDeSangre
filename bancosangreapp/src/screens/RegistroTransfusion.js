@@ -104,7 +104,7 @@ export const RegistroTransfusiones = ({ navigation }) => {
         setApellidoDonante(response.data["apellidos"]);
       });
     }
-  }, [donantesId]);
+  }, []);
 
   useEffect(() => {
     if (receptorId == "") {
@@ -132,10 +132,10 @@ export const RegistroTransfusiones = ({ navigation }) => {
       <View style={styles.card}>
         <View style={styles.contendorBotones}>
           <View>
-            <Text style={styles.leyenda}>Seleccione donante</Text>
+            <Text style={styles.leyenda}>Seleccione bolsa</Text>
             <TouchableHighlight onPress={() => setModalVisible(true)}>
               <View style={styles.buttonContainer}>
-                <Text style={styles.button}>Seleccionar donante</Text>
+                <Text style={styles.button}>Seleccionar bolsa</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -148,7 +148,7 @@ export const RegistroTransfusiones = ({ navigation }) => {
             </TouchableHighlight>
           </View>
           <View>
-            <Text style={styles.leyenda}>Donante seleccionado:</Text>
+            <Text style={styles.leyenda}>Bolsa seleccionada:</Text>
             <Text style={styles.leyenda}>
               {nombreDonante} {apellidoDonante}
             </Text>
@@ -192,7 +192,7 @@ export const RegistroTransfusiones = ({ navigation }) => {
                         tipoSangre={item.tipoSangreId}
                         tipoRH={item.tipoRHId}
                         id={item.id}
-                        setDonanteId={setDonanteId}
+                        //setDonanteId={setDonanteId}
                         setModalVisible={setModalVisible}
                         modalVisible={modalVisible}
                       />
@@ -233,7 +233,7 @@ export const RegistroTransfusiones = ({ navigation }) => {
                         tipoSangre={item.tipoSangreId}
                         tipoRH={item.tipoRHId}
                         id={item.id}
-                        setDonanteId={setReceptorId}
+                        //setDonanteId={setReceptorId}
                         setModalVisible={setModalVisibleReceptor}
                         modalVisible={modalVisibleReceptor}
                       />

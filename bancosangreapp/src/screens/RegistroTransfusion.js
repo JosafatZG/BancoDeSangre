@@ -20,19 +20,28 @@ import { useEffect } from "react";
 import { CardPacientesModal } from "../components/CardPacientesModal";
 import { CardDonanteReceptor } from "../components/CardDonanteReceptor";
 import { CardPacientes } from "../components/CardPacientes";
+import { CardBolsas } from "../components/CardBolsa";
+import { CardBolsasModal } from "../components/CardBolsaModal";
 //import { CardPacientesModal } from "../components/CardPacientesModal";
 
 export const RegistroTransfusiones = ({ navigation }) => {
+  function pad(num, size) {
+    num = num.toString();
+    while (num.length < size) num = "0" + num;
+    return num;
+  }
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleReceptor, setModalVisibleReceptor] = useState(false);
   const [pacientes, setPacientes] = useState([]);
   const [bolsasId, setBolsasId] = useState("");
   const [receptorId, setReceptorId] = useState("");
-  const [nombreDonante, setNombreDonante] = useState("");
+  const [bolsaInfo, setBolsaInfo] = useState("");
   const [apellidoDonante, setApellidoDonante] = useState("");
   const [nombreReceptor, setNombreReceptor] = useState("");
   const [apellidoReceptor, setApellidoReceptor] = useState("");
   const [bolsas, setBolsas] = useState([]);
+  const [tipoBolsa, setTipoBolsa] = useState([]);
 
   const getPacientes = () => {
     var responseJ;
@@ -46,65 +55,70 @@ export const RegistroTransfusiones = ({ navigation }) => {
   };
 
   const getBolsas = () => {
-		var responseJ;
-		axios({
-			url: customConfig.apiURL + "Bolsas/?",
-			method: 'GET'
-		}).then(async (response) => {
-			responseJ = await response.json
-			setBolsas(response.data)
-		})
-	}
+    var responseJ;
+    axios({
+      url: customConfig.apiURL + "Bolsas/?",
+      method: 'GET'
+    }).then(async (response) => {
+      responseJ = await response.json
+      var bolsas = response.data;
+      bolsas = bolsas.filter(b => b.receptorId == null);
+      setBolsas(bolsas)
+    })
+  }
 
   const editarBolsa = () => {
-			const url = customConfig.apiURL + "Usuarios/?" + new URLSearchParams({
-				id: id,
-				nombreUsuario: nombreU,
-				correo: correo
-			});
-			fetch(url,
-				{
-					method: 'PUT',
-					headers: {
-						'Content-type': 'application/json; charset=UTF-8'
-					}
-				})
-				.then(async function (response) {
-					console.log(response.status)
-					if (response.status == 200 || response.status == 201) { //finded
-						Alert.alert('Éxito', 'Usuario editado correctamente');
-						navigation.dispatch('Registro de transfusiones')
-						navigation.navigate('Registro de transfusiones')
-					}
-					else if (response.status == 500) { //connection lost
-						Alert.alert('Error', 'Intente de nuevo');
-					}
-					else { //error
-						Alert.alert('Error', 'Intente más tarde');
-					}
-				}).then(function (data) {
-					console.log(data);
-				}).catch(function (error) {
-					console.log(error);
-				})
-	}
+    if (bolsasId == '' || receptorId == '') {
+      Alert.alert("Error", "Debe elegir una bolsa y un recpetor");
+    } else {
+      var date = new Date();
+      const bToUpdate = bolsas.find(b => b.id == bolsasId);
+      bToUpdate.receptorId = receptorId;
+      bToUpdate.fechaAplicacion = date.getFullYear() + "-" + pad((date.getMonth() + 1), 2) + "-" + pad(date.getDate(), 2);
+      const url = customConfig.apiURL + "Bolsas/" + bolsasId;
+      fetch(url,
+        {
+          method: 'PUT',
+          body: JSON.stringify(bToUpdate),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+          }
+        })
+        .then(async function (response) {
+          console.log(response.status)
+          if (response.status == 200 || response.status == 201) { //finded
+            Alert.alert('Éxito', 'Transfusion realizada exitosamente');
+            navigation.dispatch('Registro de transfusiones')
+            navigation.navigate('Registro de transfusiones')
+          }
+          else if (response.status == 500) { //connection lost
+            Alert.alert('Error', 'Intente de nuevo');
+          }
+          else { //error
+            Alert.alert('Error', 'Intente más tarde');
+          }
+        }).then(function (data) {
+          console.log(data);
+        }).catch(function (error) {
+          console.log(error);
+        })
+    }
+  }
 
 
   useEffect(() => {
     if (bolsasId == "") {
-      setNombreDonante("--");
+      setBolsaInfo("No hay seleccion.");
     } else {
-      var responseJ;
-      axios({
-        url: customConfig.apiURL + "Bolsas/" + bolsasId,
-        method: "GET",
-      }).then(async (response) => {
-        responseJ = await response.json;
-        setNombreDonante(response.data["nombres"]);
-        setApellidoDonante(response.data["apellidos"]);
-      });
+      var b = bolsas.find(b => b.id == bolsasId);
+      if (b != undefined) {
+        var tb = tipoBolsa.find(t => t.id == b.tipoBolsaId);
+        if (tb != undefined) {
+          setBolsaInfo(tb.tipo);
+        }
+      }
     }
-  }, []);
+  }, [bolsasId]);
 
   useEffect(() => {
     if (receptorId == "") {
@@ -125,7 +139,14 @@ export const RegistroTransfusiones = ({ navigation }) => {
   useEffect(() => {
     getPacientes();
     getBolsas();
-  });  
+    axios({
+      url: customConfig.apiURL + "TipoBolsas/",
+      method: "GET",
+    }).then(async (response) => {
+      var responseJ = await response.json;
+      setTipoBolsa(response.data);
+    });
+  }, []);
 
   return (
     <>
@@ -150,17 +171,22 @@ export const RegistroTransfusiones = ({ navigation }) => {
           <View>
             <Text style={styles.leyenda}>Bolsa seleccionada:</Text>
             <Text style={styles.leyenda}>
-              {nombreDonante} {apellidoDonante}
+              {bolsaInfo}
             </Text>
           </View>
           <View>
             <View>
               <Text style={styles.leyenda}>Receptor seleccionado:</Text>
               <Text style={styles.leyenda}>
-                {nombreReceptor} {apellidoReceptor}
+                {
+                  receptorId == '' || receptorId == null ?
+                    "No hay seleccion."
+                    :
+                    (pacientes.find(p => p.id == receptorId).nombres + " " + pacientes.find(p => p.id == receptorId).apellidos)
+                }
               </Text>
             </View>
-            <TouchableHighlight onPress={() => alert("Registro guardado")}>
+            <TouchableHighlight onPress={() => editarBolsa()}>
               <View style={styles.buttonContainer}>
                 <Text style={styles.button}>Guardar</Text>
               </View>
@@ -180,27 +206,30 @@ export const RegistroTransfusiones = ({ navigation }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalTitulo}>Seleccione donante</Text>
-            <ScrollView horizontal={false}>
-              <View style={styles.contenedorDonates}>
-                {pacientes.map((item, index) => {
+            <Text style={styles.modalTitulo}>Seleccione bolsa</Text>
+            <View style={styles.contenedorDonates}>
+              <ScrollView>
+                {bolsas.map((item, index) => {
                   return (
                     <View key={index}>
-                      <CardPacientesModal
-                        nombre={item.nombres}
-                        apellido={item.apellidos}
+                      <CardBolsasModal
+                        navigation={navigation}
+                        donante={item.donanteId}
+                        cantidad={item.cantidadml}
+                        fechaD={item.fechaDonacion}
+                        id={item.id}
+                        tipoBolsa={item.tipoBolsaId}
                         tipoSangre={item.tipoSangreId}
                         tipoRH={item.tipoRHId}
-                        id={item.id}
-                        //setDonanteId={setDonanteId}
+                        setBolsaId={setBolsasId}
                         setModalVisible={setModalVisible}
                         modalVisible={modalVisible}
                       />
                     </View>
                   );
                 })}
-              </View>
-            </ScrollView>
+              </ScrollView>
+            </View>
             <TouchableHighlight onPress={() => setModalVisible(!modalVisible)}>
               <View style={styles.buttonContainerModal}>
                 <Text style={styles.buttonModal}>Cerrar</Text>
@@ -222,26 +251,27 @@ export const RegistroTransfusiones = ({ navigation }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitulo}>Seleccione receptor</Text>
-            <ScrollView>
-              <View style={styles.contenedorDonates}>
-                {pacientes.map((item, index) => {
-                  return (
-                    <View key={index}>
-                      <CardPacientesModal
-                        nombre={item.nombres}
-                        apellido={item.apellidos}
-                        tipoSangre={item.tipoSangreId}
-                        tipoRH={item.tipoRHId}
-                        id={item.id}
-                        //setDonanteId={setReceptorId}
-                        setModalVisible={setModalVisibleReceptor}
-                        modalVisible={modalVisibleReceptor}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </ScrollView>
+            <View style={styles.contenedorDonates}>
+              <ScrollView>
+                {
+                  pacientes.map((item, index) => {
+                    return (
+                      <View key={index}>
+                        <CardPacientesModal
+                          nombre={item.nombres}
+                          apellido={item.apellidos}
+                          tipoSangre={item.tipoSangreId}
+                          tipoRH={item.tipoRHId}
+                          id={item.id}
+                          setDonanteId={setReceptorId}
+                          setModalVisible={setModalVisibleReceptor}
+                          modalVisible={modalVisibleReceptor}
+                        />
+                      </View>
+                    );
+                  })}
+              </ScrollView>
+            </View>
             <TouchableHighlight
               onPress={() => setModalVisibleReceptor(!modalVisibleReceptor)}
             >
@@ -325,8 +355,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-		height: 600,
-		width: 370
+    height: 600,
+    width: 370
   },*/
   contenedorBuscador: {
     alignItems: "center",

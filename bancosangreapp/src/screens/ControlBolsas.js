@@ -9,6 +9,8 @@ import customConfig from '../../custom-config.json';
 import { CardBolsas } from '../components/CardBolsa';
 
 export const ControlBolsas = ({navigation}) => {
+	const[tipoRhs, setTipoRhs] = useState([]);
+	const[tipoSangre, setTipoSangre] = useState([]);
 	const[modalVisible , setModalVisible] = useState(false);
 
 	const[nombresD, setnombresD] = useState('');

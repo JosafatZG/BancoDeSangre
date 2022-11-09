@@ -6,7 +6,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import RNPickerSelect from "react-native-picker-select";
 import axios from 'axios';
 import customConfig from '../../custom-config.json';
-import { CardTransfusion } from '../components/CardTransfusion';
+import { CardBolsaTransf } from '../components/CardBolsaTransf';
 
 export const ControlTransfusiones = ({navigation}) => {
 	const[modalVisible , setModalVisible] = useState(false);
@@ -25,12 +25,13 @@ export const ControlTransfusiones = ({navigation}) => {
 			method: 'GET'
 		}).then(async (response) => {
 			responseJ = await response.json
-			setListap(response.data)
+			var list = response.data;
+			list = list.filter(l => l.receptorId != null);
+			setLista(list)
 		})
 	}
 	useEffect(()=>{
 		getLista();
-        setLista(listaP.filter(li => li.receptorId != null))
 	}, [])
 
 	const buscarBolsas = async (nombre) => {
@@ -45,7 +46,9 @@ export const ControlTransfusiones = ({navigation}) => {
 				.then(async function (response) {
 					if (response.status == 200) { //finded
 						responseJ = await response.json();
-						setLista(responseJ);
+						var list = responseJ;
+						list = list.filter(l => l.receptorId != null);
+						setLista(list);
 						//console.log(responseJ);
 					}
 				}).then(function (data) {
@@ -72,15 +75,15 @@ export const ControlTransfusiones = ({navigation}) => {
 				lista.map((item,index)=>{
 					return(
 						<View key={index}>
-							<CardTransfusion
-							navigation = {navigation}
-							donante = {item.donanteId}
-                            receptor = {item.receptorId}
+							<CardBolsaTransf
+							navigation={navigation}
+							donante ={item.donanteId}
 							cantidad= {item.cantidadml}
-							fechaD = {item.fechaDonacion}
-                            fechaR = {item.fechaAplicacion}
-							id = {item.id}
+							fechaD={item.fechaDonacion}
+							id={item.id}
 							tipoBolsa = {item.tipoBolsaId}
+							receptor={item.receptorId}
+							fechaA={item.fechaAplicacion}
 							/>
 						</View>
 					)

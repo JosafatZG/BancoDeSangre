@@ -60,7 +60,7 @@ export const ControlBolsas = ({navigation}) => {
     <>
         <View style= {styles.contenedorBuscador}>
           <TextInput             
-            style = {styles.cajaTexto}							
+            style = {styles.cajaTexto}
             placeholder='Ingrese paciente para buscar bolsa/s'
             placeholderTextColor= '#C43B58'
 			onChangeText={(value) => buscarBolsas(value)}

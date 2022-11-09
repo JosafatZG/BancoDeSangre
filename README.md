@@ -51,9 +51,9 @@ Este proyecto utiliza la licencia Attribution-NonCommercial-NoDerivatives 4.0 In
 
 >Documento Fase 1--> https://drive.google.com/file/d/1FEmhgGE4GsTEK5OubVtczDz23RnxmPws/view?usp=sharing
 
->Manual Técnico--> https://drive.google.com/file/d/1DR8AdyBMfa0kiIhC7INKhr7qnnbkNHRv/view?usp=drivesdk
+>Manual Técnico--> https://drive.google.com/file/d/1Jrh6UM1jPSvsxO9cnzctWf_ZYrR6oMkB/view?usp=share_link
 
->Manual de Usuario--> https://drive.google.com/file/d/1D2DlMAXQ9l21xvD7JHTKQOlwzpMPQzZo/view?usp=drivesdk
+>Manual de Usuario--> https://drive.google.com/file/d/11jptlT0O-A9nHnsydhJkyHROmNraKAmJ/view?usp=share_link
 
 >Mockups --> https://drive.google.com/drive/folders/1Knik_IcuUlrIlE6LWLARQcbyCTMe64_q?usp=sharing
 

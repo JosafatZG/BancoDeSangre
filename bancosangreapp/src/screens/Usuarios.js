@@ -18,12 +18,22 @@ export const Usuarios = () => {
 		  );
 	  };
 
+	  const validatePass = (pass) => {
+		return String(pass)
+		  .match(
+			/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+		  );
+	  };
+
 	const agregarUsuario = ()=> {
 		if(nombreU == '' || correo == '' || pass == ''){
 			Alert.alert('Error','Existen campos vacíos')
 		}
 		else if(!validateEmail(correo)){
 			Alert.alert('Error','Debe ingresar un correo electrónico válido')
+		}
+		else if(!validatePass(pass)){
+			Alert.alert('Error', 'La contraseña debe tener al menos 8 caracteres, una letra y un número.');
 		}
 		else if(pass != repPass){
 			Alert.alert('Error','Las contraseñas no coinciden')

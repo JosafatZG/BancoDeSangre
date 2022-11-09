@@ -1,71 +1,79 @@
 import * as React from "react";
-import {Button,View,Text,StyleSheet, Image,TextInput,TouchableHighlight,ScrollView,picker,Alert} from "react-native";
+import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView, picker, Alert } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { useState } from "react";
 import customConfig from '../../custom-config.json';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+function pad(num, size) {
+  num = num.toString();
+  while (num.length < size) num = "0" + num;
+  return num;
+}
+
 export const Pacientes = ({ navigation }) => {
-  const[nombresP, setNombresP] = useState('');
-  const[apellidosP, setApellidosP] = useState('');
-	const[tipo, setTipo] = useState('');
-	const[rh, setRH] = useState('');
-  const[gen, setGen] = useState('');
-  const[fechaNacimiento, setFechaNacimiento] = useState('');
+  const [nombresP, setNombresP] = useState('');
+  const [apellidosP, setApellidosP] = useState('');
+  const [tipo, setTipo] = useState('');
+  const [rh, setRH] = useState('');
+  const [gen, setGen] = useState('');
+  const [fechaNacimiento, setFechaNacimiento] = useState('');
 
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
-    };
-  
+  };
+
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
+  };
+
+  const confirmarFecha = date => {
+    setFechaNacimiento(date.getFullYear() + "-" + pad((date.getMonth() + 1), 2) + "-" + pad(date.getDate(), 2));
+    //setFechaNacimiento('2022-10-25T02:55:45.490Z');
+    hideDatePicker();
+  };
+
+  const agregarPaciente = () => {
+    var paciente = {
+      nombres: nombresP,
+      apellidos: apellidosP,
+      fechaNac: fechaNacimiento,
+      generoId: gen,
+      edad: 0,
+      tipoSangreId: tipo,
+      tipoRHId: rh
     };
 
-    const confirmarFecha = date => {
-      const opciones = { year: 'numeric', month: '2-digit', day: "2-digit" };
-      setFechaNacimiento(date.toLocaleDateString('fr-CA', opciones));
-      //setFechaNacimiento('2022-10-25T02:55:45.490Z');
-      hideDatePicker();
-      };
-
-  const agregarPaciente = () => {   
+    console.log(paciente)
     const url = customConfig.apiURL + "Pacientes/?";
     var responseJ;
     fetch(url, {
       method: 'POST',
-      body: JSON.stringify({
-        nombres: nombresP,
-        apellidos: apellidosP,
-        fechaNac: fechaNacimiento,  
-        generoId: gen,
-        tipoSangreId: tipo,
-        tipoRHId: rh
-
-      }),
-      headers:{
+      body: JSON.stringify(paciente),
+      headers: {
         'Content-type': 'application/json; charset=UTF-8'
       }
     })
-    .then(async function (response) {
-      if(response.status == 200 || response.status == 201){
-        Alert.alert('Éxito', 'Paciente agregado correctamente');
-          responseJ = await response.json;          
-      }
-      else if(response.status == 500){
-        Alert.alert('Error', 'Intente de nuevo');
-      }
-      else{
-        Alert.alert('Error', 'Intente más tarde');
-      }
-      return Promise.reject(JSON.stringify(response));
-    }).then(function (data){
-      console.log(data);
-    }).catch(function (error){
-      console.log(error);
-    });
+      .then(async function (response) {
+        if (response.status == 200 || response.status == 201) {
+          Alert.alert('Éxito', 'Paciente agregado correctamente');
+          responseJ = await response.json;
+        }
+        else if (response.status == 500) {
+          Alert.alert('Error', 'Intente de nuevo');
+        }
+        else {
+          Alert.alert('Error', 'Intente más tarde');
+        }
+        return Promise.reject(JSON.stringify(response));
+      }).then(function (data) {
+        console.log(data);
+      }).catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
@@ -78,7 +86,7 @@ export const Pacientes = ({ navigation }) => {
             placeholder="Ejemplo: Harry Edward"
             placeholderTextColor={"white"}
             style={styles.cardText}
-            onChangeText={(value) => setNombresP(value)}	
+            onChangeText={(value) => setNombresP(value)}
           />
           <Text style={styles.cardTitle}>Apellidos:</Text>
           <TextInput
@@ -90,27 +98,26 @@ export const Pacientes = ({ navigation }) => {
           />
           <Text style={styles.cardTitle}>Fecha de nacimiento:</Text>
           <View>
-          <TouchableHighlight onPress={showDatePicker}>
-            <View style={styles.buttonContainer2}>
-              <Text style={styles.button2}>Seleccionar fecha de nacimiento</Text>
-            </View>
-          </TouchableHighlight>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={confirmarFecha}
-            onCancel={hideDatePicker}
-            locale='es-ES'
-            headerTextIOS="Elige la fecha"
-            cancelTextIOS="Cancelar"
-            confirmTextIOS="Confirmar"   
-            style = {styles.inputIOSDate}    
-            isDarkModeEnabled= 'true'  
-            date={fechaNacimiento ? new Date(fechaNacimiento) : undefined}
-            minimumDate={new Date('2004-01-01')}
-            maximumDate={new Date('1957-01-01')}    
-          />
-          <Text style={styles.textDate}>{fechaNacimiento}</Text>
+            <TouchableHighlight onPress={showDatePicker}>
+              <View style={styles.buttonContainer2}>
+                <Text style={styles.button2}>Seleccionar fecha de nacimiento</Text>
+              </View>
+            </TouchableHighlight>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={confirmarFecha}
+              onCancel={hideDatePicker}
+              locale='es-ES'
+              headerTextIOS="Elige la fecha"
+              cancelTextIOS="Cancelar"
+              confirmTextIOS="Confirmar"
+              style={styles.inputIOSDate}
+              isDarkModeEnabled='true'
+              date={fechaNacimiento ? new Date(fechaNacimiento) : undefined}
+              maximumDate={new Date('2004-01-01')}
+            />
+            <Text style={styles.textDate}>Fecha seleccionada: {fechaNacimiento}</Text>
           </View>
 
           <Text style={styles.cardTitle}>Género</Text>
@@ -123,7 +130,7 @@ export const Pacientes = ({ navigation }) => {
               { label: "NR", value: 4 },
               { label: "O", value: 3 },
             ]}
-            onValueChange = {(value=>setGen(value))}
+            onValueChange={(value => setGen(value))}
           />
           <Text style={styles.cardTitle}>Tipo de sangre:</Text>
           <RNPickerSelect
@@ -135,7 +142,7 @@ export const Pacientes = ({ navigation }) => {
               { label: "O", value: 4 },
               { label: "AB", value: 1 },
             ]}
-            onValueChange = {(value=>setTipo(value))}
+            onValueChange={(value => setTipo(value))}
           />
           <Text style={styles.cardTitle}>Tipo RH:</Text>
           <RNPickerSelect
@@ -145,7 +152,7 @@ export const Pacientes = ({ navigation }) => {
               { label: "Positivo", value: 1 },
               { label: "Negativo", value: 2 },
             ]}
-            onValueChange = {(value=>setRH(value))}
+            onValueChange={(value => setRH(value))}
           />
           <TouchableHighlight
             onPress={() => agregarPaciente()}
@@ -215,12 +222,12 @@ const styles = StyleSheet.create({
   datePickerStyle: {
     width: 300,
     marginTop: 20,
-    borderColor:'white',
-    borderWidth:2,
-    borderRadius:10,
-    height:150,
-    alignItems:'center',
-    alignContent:'center',
+    borderColor: 'white',
+    borderWidth: 2,
+    borderRadius: 10,
+    height: 150,
+    alignItems: 'center',
+    alignContent: 'center',
 
   },
   button2: {
@@ -232,8 +239,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#C43B58",
     marginTop: 10,
     borderRadius: 10,
-    borderColor:'white',
-    borderWidth:2
+    borderColor: 'white',
+    borderWidth: 2
   },
   inputIOSDate: {
     height: 150,
@@ -246,11 +253,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     color: "black",
   },
-  textDate:{
+  textDate: {
     color: 'white',
-    fontWeight:'bold',
-    fontSize:17,
-    marginTop:5
+    fontWeight: 'bold',
+    fontSize: 17,
+    marginTop: 5
   }
 });
 

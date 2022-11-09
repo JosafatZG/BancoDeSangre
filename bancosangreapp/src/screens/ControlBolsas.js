@@ -30,7 +30,31 @@ export const ControlBolsas = ({navigation}) => {
 	}
 	useEffect(()=>{
 		getLista();
-	})
+	}, [])
+
+	const buscarBolsas = async (nombre) => {
+		console.log(nombre);
+		const url =
+			customConfig.apiURL + "Bolsas/Buscar?" + new URLSearchParams({
+				nombre: nombre,
+			});
+		try {
+			var responseJ;
+			await fetch(url)
+				.then(async function (response) {
+					if (response.status == 200) { //finded
+						responseJ = await response.json();
+						setLista(responseJ);
+						//console.log(responseJ);
+					}
+				}).then(function (data) {
+					//console.log(data);
+				});
+			//console.log(responseJ);
+		} catch (error) {
+			//console.log(error);
+		}
+	}
 
     return(
     <>
@@ -38,7 +62,8 @@ export const ControlBolsas = ({navigation}) => {
           <TextInput             
             style = {styles.cajaTexto}							
             placeholder='Ingrese paciente para buscar bolsa/s'
-            placeholderTextColor= '#C43B58'										
+            placeholderTextColor= '#C43B58'
+			onChangeText={(value) => buscarBolsas(value)}
           />
         </View>
         <ScrollView>

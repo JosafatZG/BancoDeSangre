@@ -10,6 +10,7 @@ import { Pacientes } from './src/screens/Pacientes';
 import { Usuarios } from './src/screens/Usuarios';
 import { ControlUsuarios } from './src/screens/ControlUsuarios';
 import { ControlPacientes } from './src/screens/ControlPacientes';
+import { ControlTransfusiones } from './src/screens/ControlTransfusiones';
 import { Donacion } from './src/screens/Donacion';
 import { EditUsuario } from './src/screens/EditUsuario';
 import { ControlBolsas } from './src/screens/ControlBolsas';
@@ -32,6 +33,7 @@ export default function App() {
         <Stack.Screen name="Registro de bolsa" component={Donacion} />
         <Stack.Screen name="Control de bolsas" component={ControlBolsas} />
         <Stack.Screen name="Registro de transfusiones" component={RegistroTransfusiones} />
+        <Stack.Screen name="Administracion de bolsas de sangre" component={ControlTransfusiones} />
       </Stack.Navigator>
     </NavigationContainer>  
   );

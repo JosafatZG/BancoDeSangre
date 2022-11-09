@@ -26,12 +26,13 @@ export const RegistroTransfusiones = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleReceptor, setModalVisibleReceptor] = useState(false);
   const [pacientes, setPacientes] = useState([]);
-  const [donantesId, setDonanteId] = useState("");
+  const [bolsasId, setBolsasId] = useState("");
   const [receptorId, setReceptorId] = useState("");
   const [nombreDonante, setNombreDonante] = useState("");
   const [apellidoDonante, setApellidoDonante] = useState("");
   const [nombreReceptor, setNombreReceptor] = useState("");
   const [apellidoReceptor, setApellidoReceptor] = useState("");
+  const [bolsas, setBolsas] = useState([]);
 
   const getPacientes = () => {
     var responseJ;
@@ -44,13 +45,58 @@ export const RegistroTransfusiones = ({ navigation }) => {
     });
   };
 
+  const getBolsas = () => {
+		var responseJ;
+		axios({
+			url: customConfig.apiURL + "Bolsas/?",
+			method: 'GET'
+		}).then(async (response) => {
+			responseJ = await response.json
+			setBolsas(response.data)
+		})
+	}
+
+  const editarBolsa = () => {
+			const url = customConfig.apiURL + "Usuarios/?" + new URLSearchParams({
+				id: id,
+				nombreUsuario: nombreU,
+				correo: correo
+			});
+			fetch(url,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json; charset=UTF-8'
+					}
+				})
+				.then(async function (response) {
+					console.log(response.status)
+					if (response.status == 200 || response.status == 201) { //finded
+						Alert.alert('Éxito', 'Usuario editado correctamente');
+						navigation.dispatch('Registro de transfusiones')
+						navigation.navigate('Registro de transfusiones')
+					}
+					else if (response.status == 500) { //connection lost
+						Alert.alert('Error', 'Intente de nuevo');
+					}
+					else { //error
+						Alert.alert('Error', 'Intente más tarde');
+					}
+				}).then(function (data) {
+					console.log(data);
+				}).catch(function (error) {
+					console.log(error);
+				})
+	}
+
+
   useEffect(() => {
-    if (donantesId == "") {
+    if (bolsasId == "") {
       setNombreDonante("--");
     } else {
       var responseJ;
       axios({
-        url: customConfig.apiURL + "Pacientes/" + donantesId,
+        url: customConfig.apiURL + "Bolsas/" + bolsasId,
         method: "GET",
       }).then(async (response) => {
         responseJ = await response.json;
@@ -78,6 +124,7 @@ export const RegistroTransfusiones = ({ navigation }) => {
 
   useEffect(() => {
     getPacientes();
+    getBolsas();
   });  
 
   return (
@@ -93,7 +140,7 @@ export const RegistroTransfusiones = ({ navigation }) => {
             </TouchableHighlight>
           </View>
           <View>
-            <Text style={styles.leyenda}>Seleccione donante</Text>
+            <Text style={styles.leyenda}>Seleccione receptor</Text>
             <TouchableHighlight onPress={() => setModalVisibleReceptor(true)}>
               <View style={styles.buttonContainer}>
                 <Text style={styles.button}>Seleccionar receptor</Text>

@@ -82,7 +82,7 @@ export const MenuUsuario = ({navigation}) => {
 						</View>	
 						<TouchableHighlight
 						 	style = {styles.contenedorinfo}
-							onPress = {() => alert('Administración de bolsas de sangre')}
+							 onPress = {() => navigation.navigate('Administracion de bolsas de sangre')}
 						>
 							<Text style = {styles.tituloOpciones1}>Administración de bolsas de sangre</Text>
 						</TouchableHighlight>						

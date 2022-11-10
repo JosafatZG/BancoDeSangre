@@ -72,10 +72,13 @@ export const CardPacientes = ({
                 customConfig.apiURL + "Pacientes/" + idEliminar,
               method: "DELETE",
             }).then(async (response) => {
+              console.log(response);
               //responseJ = await response.json
               Alert.alert("Eliminado", "Paciente eliminado correctamente");
               setModalVisible(!modalVisible);
               useEffect();
+            }).catch(()=>{
+              Alert.alert("Error", "El paciente no se puede eliminar porque ya posee registros de transfusiones y/o donaciones");
             });
           },
         },
@@ -87,6 +90,7 @@ export const CardPacientes = ({
   };
 
   const modificarPaciente = (idP) => {
+    console.log(idP);
     var paciente = {
       id: idP,
       nombres: nombrePaciente,
@@ -117,6 +121,7 @@ export const CardPacientes = ({
             Alert.alert("Éxito", "Paciente actualizado correctamente");
             responseJ = await response.json;
             setModalVisible(!modalVisible);
+            useEffect();
           } else if (response.status == 500) {
             Alert.alert("Error", "Intente de nuevo");
           } else {

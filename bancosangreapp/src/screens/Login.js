@@ -20,7 +20,7 @@ export const Login = ({ navigation }) => {
       accessToken && fetchUserInfo();
       navigation.navigate('Menu usuario')
     }
-  }, [])
+  }, [response])
 
   async function fetchUserInfo() {
     let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {

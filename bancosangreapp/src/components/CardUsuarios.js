@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, View, Text, StyleSheet, Image, TextInput, TouchableHighlight, ScrollView, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,6 +28,7 @@ export const CardUsuarios = ({ navigation, nombre, correo, id }) => {
 							//responseJ = await response.json
 							Alert.alert('Eliminado','Usuario eliminado correctamente');
 							navigation.navigate('Control de usuarios', {});
+							useEffect();
 						})
 					},
 				},
